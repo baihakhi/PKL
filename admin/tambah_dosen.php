@@ -1,5 +1,8 @@
 <?php
 
+$status = "admin";
+$level = "Administrator";
+
 include_once('../include/function.php');
 include_once('../include/sidebar.php');
 

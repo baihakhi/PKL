@@ -125,7 +125,7 @@
 				?>
 				<li>
 						<?php
-							echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Jadwal';
+							echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Mata Kuliah';
 						?>
 					<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
