@@ -137,13 +137,6 @@ if(isset($_POST['tambah'])){
                     <td>Laboratorium</td>
                     <td class="colon">:</td>
                     <td>
-                      <!--
-                      <select class="input-field col s12" name="lab">
-                        <option value="0">Kimia Dasar</option>
-                        <option value="2">Biokimia</option>
-                        <option value="3">Kimia Terapan</option>
-                      </select>
-                    -->
                       <?php
                         include_once('../include/input_lab.php');
                       ?>
@@ -179,7 +172,7 @@ if(isset($_POST['tambah'])){
       $('select').material_select();
       var namaLab = $('#lab').find('option:selected').text();
       $('#nama-lab').text(namaLab);
-      $("select[required]").css({display: "inline", height: 0, padding: 0, width: 0});
+      $("selectrequired]").css({display: "inline", height: 0, padding: 0, width: 0});
       $(".caret").css("height", "50px");
     });
     </script>

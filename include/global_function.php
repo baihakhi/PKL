@@ -2,10 +2,11 @@
 include_once('koneksi.php');
 
 function readInput($input){
+  global $db;
   $input = trim($input);
   $input = stripcslashes($input);
   $input = htmlspecialchars($input);
-  $input = mysql_real_escape_string($input);
+  $input = mysqli_real_escape_string($db,$input);
   return $input;
 }
 
@@ -60,6 +61,20 @@ function checkQueryExist($query){
   if ($query) {
     if ($query->num_rows > 0){
       return true;
+    }
+    else {
+      return false;
+    }
+    return false;
+  }
+}
+
+function countQueryExist($table,$idKolom,$id){
+  global $db;
+  $query = $db->query("SELECT * FROM ".$table." WHERE ".$idKolom." = '".$id."'");
+  if ($query) {
+    if ($query->num_rows > 0){
+      return $query->num_rows;
     }
     else {
       return false;

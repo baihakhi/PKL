@@ -11,7 +11,4 @@
     }
     ?>
   </select>
-<!--
-  <label>Laboratorium</label>
--->
 </div>

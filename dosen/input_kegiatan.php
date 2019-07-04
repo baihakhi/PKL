@@ -8,35 +8,81 @@ $NIP = "199801012001020212";
 include_once('../include/function.php');
 include_once('../include/sidebar.php');
 
-$arrLab = getAllRow('laboratorium');
-$errPict = '';
 
-$row = getSpesificRow('dosen','NIP',$NIP);
-if (checkQueryExist($row)){
-  while ($dosen = $row->fetch_object()) {
-    $nip = 
+//================KODE KEGIATAN
+
+$rowDosen = getSpesificRow('dosen','NIP',$NIP);
+if (checkQueryExist($rowDosen)){
+  while ($dosen = $rowDosen->fetch_object()) {
+    $nip = $dosen->NIP;
   }
 }
-$kodeEmail = explode($NIP,)
-$kode =
+
 
 if(isset($_POST['tambah'])){
 
+  //KODE KEGIATAN
+  $jenis = readInput($_POST['jenis-kegiatan']);
+  $tanggal = readInput($_POST['tanggal']);
+  $arrtgl = explode("-",$tanggal);
+  $subNip = str_split($NIP,4);
 
+  $kodeKegiatan = $jenis.$arrtgl[1].$arrtgl[2];
+  $rowKegiatan  = getSpesificRow('kegiatan','id_kegiatan',$kodeKegiatan);
+
+  $numKegiatan = countQueryKegiatan($kodeKegiatan)+1;
+  $numKegDos   = countQueryExist('kegiatan_dosen','nip',$NIP);
+  $idKegiatan = $kodeKegiatan.$numKegiatan;
+
+  //KODE KEGIATAN DOSEN
+  $numKegDos=$numKegDos+1;
+  $kodeKD = $subNip[1].$subNip[3].$subNip[4].$numKegDos;
   //================KAMUS-MATKUL
-  $array = array();
+  $array1 = array();
 
-  array_push($array,!empty($_POST['kode']) ?  : '');
-  array_push($array,!empty($_POST['nama']) ? readInput($_POST['judul']) : '');
-  array_push($array,!empty($_POST['fakultas']) ? readInput($_POST['jenis']) : '');
-  array_push($array,!empty($_POST['jurusan']) ? readInput($_POST['tempat']) : '');
-  array_push($array,!empty($_POST['tempat']) ? readInput($_POST['tanggal']) : '');
-  array_push($array,!empty($_POST['hari']) ? readInput($_POST['waktu']) : '');
+  array_push($array1, $idKegiatan);
+  array_push($array1,!empty($_POST['judul']) ? readInput($_POST['judul']) : '');
+  array_push($array1,!empty($_POST['jenis-kegiatan']) ? $jenis : '');
+  array_push($array1,!empty($_POST['tempat']) ? readInput($_POST['tempat']) : '');
+  array_push($array1,!empty($_POST['tanggal']) ? $tanggal : '');
+  array_push($array1,!empty($_POST['waktu']) ? readInput($_POST['waktu']) : '');
 
+  $array2 = array();
 
-  if (in_array('',$array)) {
+  array_push($array2,$kodeKD);
+  array_push($array2,$nip);
+  array_push($array2,$idKegiatan);
+
+/*
+  print_r($subNip);
+  echo $subNip[1]."\t nip 1 \t";
+  echo $kodeKD."\t KD \t";
+  echo $nip."\t nip \t";
+
+  print_r($array1);
+  print_r($array2);
+*/
+  if (in_array('',$array1) && in_array('',$array2)) {
     $notif = 3;
-  }
+  }else{
+    if (!checkKegiatanExist($kodeKegiatan)) {
+      if (tambahKegiatan($array1) && tambahKegiatanDosen($array2)) {
+        $notif = 1;
+  //        header('Location: info_dosen.php?q='$nip)
+      }else {
+        //$notif = 2;
+        include_once('../include/list_kegiatan.php');
+        ?>
+        <script>
+         document.querySelector('.bg-modal').style.display = "flex";
+        </script>
+        <?php
+      }
+    }else {
+//
+    }
+
+  /*
   else {
     if (!checkKegiatanExist($_POST['id_kegiatan'])) {
       if (tambahKegiatan($array)) {
@@ -50,7 +96,9 @@ if(isset($_POST['tambah'])){
     else {
       $notif = 4;
     }
-  }
+    */
+
+}
 }
 ?>
 
@@ -64,7 +112,7 @@ if(isset($_POST['tambah'])){
     <main>
       <div class="row">
         <div class="main-border">
-          <div class="section col s12 m12 l12">
+        <div class="section col s12 m12 l12">
             <h5 class="judul center-align">Input data Kegiatan</h5>
 
             <div class="row">
@@ -74,17 +122,26 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Judul Kegiatan</td>
                     <td class="colon">:</td>
-                    <td colspan="4"><input type="text" name="judul" required></td>
+                    <td colspan="4"><input type="text" name="judul" maxlength="40" required></td>
                   </tr>
                   <tr>
                     <td>Jenis Kegiatan</td>
                     <td class="colon">:</td>
-                    <td ><input type="text" name="jenis"></td>
+                    <td >
+                      <select id="jenis-kegiatan" name="jenis-kegiatan">
+                        <option selected disabled value=''>- Pilih Jenis Kegiatan -</option>;
+                        <option value='R'>Rapat</option>;
+                        <option value='S'>Seminar</option>;
+                        <option value='P'>Pelatihan</option>;
+                        <option value='K'>Kepentingan Penelitian</option>;
+                      </select>
+                    <!--<input type="text" name="jenis">-->
+                    </td>
                   </tr>
                   <tr>
                     <td>Tempat</td>
                     <td class="colon">:</td>
-                    <td ><input type="text" name="tempat"></td>
+                    <td colspan="4"><input type="text" name="tempat" maxlength="40" ></td>
                   </tr>
                   <tr>
                     <td>Tanggal</td>
@@ -93,13 +150,13 @@ if(isset($_POST['tambah'])){
                     <td>Jam</td>
                     <td class="colon">:</td>
                     <td >
-                      <input type="time" name="waktu" style="display:inline; max-width: 45%" value="06:00">
+                      <input type="time" name="waktu" style="display:inline; max-width: 100%" value="06:00">
                     </td>
                   </tr>
                 </table>
 
-                <div class="form-group kanan-align" style="margin-right:13%">
-                  <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah">SUBMIT</button>
+                <div class="form-group kanan-align" style="margin-right:13%;">
+                  <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah" style="display:contents;">SUBMIT</button>
                 </div>
 
               </form>

@@ -35,6 +35,7 @@ function getAdmin ($username){
 }
 */
 
+
 //------------------------------FUNGSI DATA DOSEN
 //input data dosen function
 function checkDosenExist ($arr){
@@ -160,16 +161,58 @@ function checkKegiatanExist ($arr){
   global $db;
   $kode = $arr[0];
 
-  $query = $db->query("SELECT * FROM kegiatan WHERE kode='$kode' ");
+  $query = $db->query("SELECT * FROM kegiatan WHERE kode LIKE ".$kode."%");
   return checkQueryExist($query);
+}
+
+
+function getSpesificKegiatan($jenis){
+  global $db;
+  $row = $db->query("SELECT * FROM 'kegiatan' WHERE 'id_kegiatan' LIKE '".$jenis."%'");
+  return runQuery($row);
+}
+
+function getKegiatan($id){
+  global $db;
+
+  $query = $db->query("SELECT * FROM kegiatan_dosen JOIN kegiatan
+                        ON kegiatan_dosen.id_kegiatan=kegiatan.id_kegiatan
+                        WHERE kegiatan.id_kegiatan LIKE '".$id."%'");
+
+  return isset($query) ? runQuery($query) : false;
 }
 
 function tambahKegiatan ($arr){
   global $db;
 
-  $query = $db->query("INSERT INTO mapel (id_kegiatan, judul, jenis, tempat, tanggal, waktu)
+  $query = $db->query("INSERT INTO kegiatan (id_kegiatan, judul, jenis, tempat, tanggal, waktu)
   VALUES ('$arr[0]','$arr[1]','$arr[2]','$arr[3]','$arr[4]','$arr[5]')");
 
   return isset($query) ? checkQuery($query) : false;
 }
+
+function tambahKegiatanDosen ($arr){
+  global $db;
+
+  $query = $db->query(
+    "INSERT INTO kegiatan_dosen(id_k_dos, nip, id_kegiatan)
+    VALUES ('$arr[0]','$arr[1]','$arr[2]')");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function countQueryKegiatan($jenis){
+  global $db;
+  $query = $db->query("SELECT * FROM 'kegiatan' WHERE 'id_kegiatan' LIKE ".$jenis."%");
+  if ($query) {
+    if ($query->num_rows > 0){
+      return $query->num_rows;
+    }
+    else {
+      return false;
+    }
+    return false;
+  }
+}
+
 ?>
