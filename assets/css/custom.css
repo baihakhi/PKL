@@ -350,10 +350,10 @@ background-color: #FFF;
 .kiri-align{
   margin: 0 20px 0 20px;
   float: left;
-  max-width: 25%;
+  max-width: 15%;
 }
 .foto-profil{
-  width: 150px;
+  width: 100%;
   border-color: #4eecde;
   margin-top: 15px;
 }

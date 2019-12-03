@@ -160,11 +160,11 @@ function hapusData($class,$id){
 function checkKegiatanExist ($arr){
   global $db;
   $kode = $arr[0];
+  $judul = $arr[1];
 
-  $query = $db->query("SELECT * FROM kegiatan WHERE kode LIKE ".$kode."%");
+  $query = $db->query("SELECT * FROM kegiatan WHERE kegiatan.judul = '".$judul."'AND kegiatan.kode LIKE '".$kode."%' ");
   return checkQueryExist($query);
 }
-
 
 function getSpesificKegiatan($jenis){
   global $db;
@@ -195,8 +195,9 @@ function tambahKegiatanDosen ($arr){
   global $db;
 
   $query = $db->query(
-    "INSERT INTO kegiatan_dosen(id_k_dos, nip, id_kegiatan)
-    VALUES ('$arr[0]','$arr[1]','$arr[2]')");
+    "INSERT INTO kegiatan_dosen (nip, id_kegiatan)
+    VALUES ('$arr[0]','$arr[1]')
+    ");
 
   return isset($query) ? checkQuery($query) : false;
 }
@@ -204,6 +205,67 @@ function tambahKegiatanDosen ($arr){
 function countQueryKegiatan($jenis){
   global $db;
   $query = $db->query("SELECT * FROM 'kegiatan' WHERE 'id_kegiatan' LIKE ".$jenis."%");
+  if ($query) {
+    if ($query->num_rows > 0){
+      return $query->num_rows;
+    }
+    else {
+      return false;
+    }
+    return false;
+  }
+}
+
+//===========================FUNGSI DATA KEGIATAN DOSEN
+
+function checkKaryaExist ($arr){
+  global $db;
+  $kode = $arr[0];
+  $judul = $arr[1];
+
+  $query = $db->query("SELECT * FROM karya_ilmiah WHERE karya.judul = '".$judul."'AND karya.kode LIKE '".$kode."%' ");
+  return checkQueryExist($query);
+}
+
+function getSpesificKarya($jenis){
+  global $db;
+  $row = $db->query("SELECT * FROM 'karya_ilmiah' WHERE 'id_arya' LIKE '".$jenis."%'");
+  return runQuery($row);
+}
+
+function getKarya($id){
+  global $db;
+
+  $query = $db->query("SELECT * FROM karya_ilmiah JOIN karya_dosen
+                        ON karya_dosen.id_karya=karya_ilmiah.id_karya
+                        WHERE karya_ilmiah.id_karya LIKE '".$id."%'");
+
+  return isset($query) ? runQuery($query) : false;
+}
+
+function tambahKarya ($arr){
+  global $db;
+
+  $query = $db->query("INSERT INTO karya_ilmiah (id_karya, judul, jenis, tanggal, dana, pendana, dokumen)
+  VALUES ('$arr[0]','$arr[1]','$arr[2]','$arr[3]','$arr[4]','$arr[5]','$arr[6]')");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function tambahKaryaDosen ($arr){
+  global $db;
+
+  $query = $db->query(
+    "INSERT INTO karya_dosen (nip, id_karya)
+    VALUES ('$arr[0]','$arr[1]')
+    ");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function countQueryKarya($jenis){
+  global $db;
+  $query = $db->query("SELECT * FROM 'karya_ilmiah' WHERE 'id_karya' LIKE ".$jenis."%");
   if ($query) {
     if ($query->num_rows > 0){
       return $query->num_rows;

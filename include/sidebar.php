@@ -82,11 +82,11 @@
 					echo '<li>
 						<a href="#"><i class="fa fa-edit fa-2x"></i> Kelola Kegiatan<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a href="input_kegiatan.php">Tambah Kegiatan</a></li>
+							<li><a href="tambah_kegiatan.php">Tambah Kegiatan</a></li>
 
 						</ul>
 					</li>';
-				}elseif ($status=="dossen") {
+				}elseif ($status=="dosen") {
 					echo '<li>
 						<a href="#"><i class="fa fa-edit fa-2x"></i> Kelola PKT<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
@@ -125,7 +125,7 @@
 				?>
 				<li>
 						<?php
-							echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Mata Kuliah';
+							echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Karya Ilmiah';
 						?>
 					<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
@@ -143,13 +143,8 @@
 -->
 				<?php
 					if($status=='dosen'){
-						echo '<li><a href="daftar_input_outline.php">Input Nilai Outline</a></li>';
-						echo '<li><a href="input_nilai_progress.php">Input Nilai Progress</a></li>';
-						echo '<li><a href="input_nilai_progress.php">Input Berita Acara Outline</a></li>';
-						echo '<li><a href="input_nilai_progress.php">Input Berita Acara Progress</a></li>';
-						echo '<li><a href="input_nilai_progress.php">Berita Acara Outline</a></li>';
-						echo '<li><a href="input_nilai_progress.php">Berita Acara Progress</a></li>';
-						echo '<li><a href="daftar_nilai_tr1.php">Input Nilai TR1</a></li>';
+						echo '<li><a href="tambah_karya_ilmiah.php">Input Karya Ilmiah</a></li>';
+						
 					}
 
 				?>

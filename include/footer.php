@@ -17,6 +17,9 @@
     <script src="../assets/js/jquery.metisMenu.js"></script>
     <!-- CUSTOM SCRIPTS -->
     <script src="../assets/js/custom.js"></script>
+		<!-- SELECTIZE SCRIPTS -->
+    <script src="../assets/js/selectize.js"></script>
+		<script src="../assets/js/selectize.min.js"></script>
 		<!-- MODAL SCRIPTS
 		<script src="../assets/js/modal.js"></script>
 -->

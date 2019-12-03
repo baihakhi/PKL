@@ -38,7 +38,7 @@ table.centered thead tr th,table.centered tbody tr td{
 thead{border-bottom:1px solid #d0d0d0}
 
 td,th{
-  padding:15px 5px;
+  padding:8px 5px;
   display:table-cell;
   text-align:left;
   vertical-align:middle;
@@ -58,7 +58,8 @@ table.responsive-table tbody{display:block;width:auto;position:relative;overflow
 }
 
 .center,.center-align{
-  text-align:center
+  text-align:center;
+  width: 100%;
 }
 
 .left{

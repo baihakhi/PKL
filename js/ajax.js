@@ -33,7 +33,7 @@ $(document).ready(function(){
     });
   };
   $.fn.CancelDelete = function() {
-    this.parent().html(btnDefault);
+    this.parent().append(btnDefault);
   };
 
 });

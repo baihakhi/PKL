@@ -8,6 +8,8 @@ $NIP = "199801012001020212";
 include_once('../include/function.php');
 include_once('../include/sidebar.php');
 
+$arrListDosen = getAllRow('dosen');
+//$selectedNip = array();
 
 //================KODE KEGIATAN
 
@@ -20,85 +22,78 @@ if (checkQueryExist($rowDosen)){
 
 
 if(isset($_POST['tambah'])){
-
   //KODE KEGIATAN
   $jenis = readInput($_POST['jenis-kegiatan']);
   $tanggal = readInput($_POST['tanggal']);
   $arrtgl = explode("-",$tanggal);
-  $subNip = str_split($NIP,4);
+  $selectedNip = $_POST['listDosen'];
+  print_r($selectedNip);
+  $jumlahDosen = sizeof($selectedNip);
+  echo "jumlah dosen : ".$jumlahDosen;
 
+//  $subNip = str_split($NIP,4);
   $kodeKegiatan = $jenis.$arrtgl[1].$arrtgl[2];
   $rowKegiatan  = getSpesificRow('kegiatan','id_kegiatan',$kodeKegiatan);
-
   $numKegiatan = countQueryKegiatan($kodeKegiatan)+1;
-  $numKegDos   = countQueryExist('kegiatan_dosen','nip',$NIP);
   $idKegiatan = $kodeKegiatan.$numKegiatan;
 
+/*
+  $numKegDos   = countQueryExist('kegiatan_dosen','nip',$NIP);
   //KODE KEGIATAN DOSEN
   $numKegDos=$numKegDos+1;
   $kodeKD = $subNip[1].$subNip[3].$subNip[4].$numKegDos;
-  //================KAMUS-MATKUL
-  $array1 = array();
-
-  array_push($array1, $idKegiatan);
-  array_push($array1,!empty($_POST['judul']) ? readInput($_POST['judul']) : '');
-  array_push($array1,!empty($_POST['jenis-kegiatan']) ? $jenis : '');
-  array_push($array1,!empty($_POST['tempat']) ? readInput($_POST['tempat']) : '');
-  array_push($array1,!empty($_POST['tanggal']) ? $tanggal : '');
-  array_push($array1,!empty($_POST['waktu']) ? readInput($_POST['waktu']) : '');
-
-  $array2 = array();
-
-  array_push($array2,$kodeKD);
-  array_push($array2,$nip);
-  array_push($array2,$idKegiatan);
-
-/*
-  print_r($subNip);
-  echo $subNip[1]."\t nip 1 \t";
-  echo $kodeKD."\t KD \t";
-  echo $nip."\t nip \t";
-
-  print_r($array1);
-  print_r($array2);
 */
-  if (in_array('',$array1) && in_array('',$array2)) {
-    $notif = 3;
+  //================INPUT DATABASE1
+
+  $arrayKegiatan = array();//array for table kegiatan
+
+  array_push($arrayKegiatan, $idKegiatan);
+  array_push($arrayKegiatan,!empty($_POST['judul']) ? readInput($_POST['judul']) : '');
+  array_push($arrayKegiatan,!empty($_POST['jenis-kegiatan']) ? $jenis : '');
+  array_push($arrayKegiatan,!empty($_POST['tempat']) ? readInput($_POST['tempat']) : '');
+  array_push($arrayKegiatan,!empty($_POST['tanggal']) ? $tanggal : '');
+  array_push($arrayKegiatan,!empty($_POST['waktu']) ? readInput($_POST['waktu']) : '');
+
+  if (in_array('',$arrayKegiatan)) {
+    $notif = 3;//null data
+    echo "null";
   }else{
     if (!checkKegiatanExist($kodeKegiatan)) {
-      if (tambahKegiatan($array1) && tambahKegiatanDosen($array2)) {
-        $notif = 1;
-  //        header('Location: info_dosen.php?q='$nip)
+      if (tambahKegiatan($arrayKegiatan)) {
+        $notif = 1;//sukses
+        echo "array1 sukses";
+//        header('Location: info_dosen.php?q='$nip)
       }else {
-        //$notif = 2;
-        include_once('../include/list_kegiatan.php');
-        ?>
-        <script>
-         document.querySelector('.bg-modal').style.display = "flex";
-        </script>
-        <?php
+        $notif = 2;//duplikasi
+        echo "array kegiatan duplikasi";
+        //include_once('../include/list_kegiatan.php');
       }
-    }else {
-//
     }
 
-  /*
-  else {
-    if (!checkKegiatanExist($_POST['id_kegiatan'])) {
-      if (tambahKegiatan($array)) {
-        $notif = 1;
-//        header('Location: info_dosen.php?q='$nip)
+  }
+
+  for ($i=0; $i<=$jumlahDosen-1; $i++) {
+    $arrayTmp = array(); //===rray for table kegiatan_dosen
+    array_push($arrayTmp, $selectedNip[$i]);
+    array_push($arrayTmp,$idKegiatan);
+    if (in_array('',$arrayKegiatan)) {
+      $notif = 3;//null data
+      echo "null";
+    }else
+      if (tambahKegiatanDosen($arrayTmp)) {
+        $notif = 1;//sukses
+        echo "array2-".$i." sukses";
+  //        header('Location: info_dosen.php?q='$nip)
       }
       else {
-        $notif = 2;
+        $notif = 4;
+        echo "notif 4";
       }
-    }
-    else {
-      $notif = 4;
-    }
-    */
+    print_r($arrayTmp);
+    unset($arrayTmp);
+  }
 
-}
+//  array_push($array2,$kodeKD);
 }
 ?>
 
@@ -115,14 +110,15 @@ if(isset($_POST['tambah'])){
         <div class="section col s12 m12 l12">
             <h5 class="judul center-align">Input data Kegiatan</h5>
 
+<!-- FORM POST INPUT------------>
             <div class="row">
-              <form class="col s12" method="post" enctype="multipart/form-data">
+              <form id="kegiatans"class="col s12" method="post" enctype="multipart/form-data">
 
                 <table align="center" style="max-width:75% ;">
                   <tr>
                     <td>Judul Kegiatan</td>
                     <td class="colon">:</td>
-                    <td colspan="4"><input type="text" name="judul" maxlength="40" required></td>
+                    <td colspan="4"><input type="text" name="judul" maxlength="60" required></td>
                   </tr>
                   <tr>
                     <td>Jenis Kegiatan</td>
@@ -141,7 +137,7 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Tempat</td>
                     <td class="colon">:</td>
-                    <td colspan="4"><input type="text" name="tempat" maxlength="40" ></td>
+                    <td colspan="4"><input type="text" name="tempat" maxlength="60" ></td>
                   </tr>
                   <tr>
                     <td>Tanggal</td>
@@ -153,10 +149,19 @@ if(isset($_POST['tambah'])){
                       <input type="time" name="waktu" style="display:inline; max-width: 100%" value="06:00">
                     </td>
                   </tr>
+                  <tr>
+                    <td>Kontributor</td>
+                    <td class="colon">:</td>
+                    <td colspan="4" style="width:75%;">
+                      <?php
+                        include_once('../include/input_dosen.php');
+                      ?>
+                    </td>
+                  </tr>
                 </table>
 
-                <div class="form-group kanan-align" style="margin-right:13%;">
-                  <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah" style="display:contents;">SUBMIT</button>
+                <div class="form-group kanan-align" style="margin-right:10%;">
+                  <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah" >SUBMIT</button>
                 </div>
 
               </form>
@@ -169,7 +174,13 @@ if(isset($_POST['tambah'])){
     </main>
 
     <?php include_once('../include/footer.php'); ?>
+    <script>
+    $(document).ready(function(){
+      $('#listDosen').selectize({plugins:['remove_button']
+      });
 
+    });
+    </script>
     <?php
     if (isset($notif)) {
       switch ($notif) {
