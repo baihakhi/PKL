@@ -112,6 +112,38 @@ function getSpesificRow($table,$idKolom,$id){
   return runQuery($row);
 }
 
+function getIdKaryaRows($nip){
+  global $db;
+  $row = $db->query("SELECT id_lab FROM karya_dosen WHERE nip = '".$nip."'");
+  return runQuery($row);
+}
+
+function getSpesificRow2($table1,$table2,$idKolom,$id){
+  global $db;
+  $row = $db->query("SELECT * FROM ".$table1." JOIN ".$table2."
+          ON ".$table1.".".$idKolom." = ".$table2.".".$idKolom."
+          WHERE ".$table1.".".$idKolom." = '".$id."'");
+  return runQuery($row);
+}
+
+function getMoreSpesificRow2($table1,$table2,$idKolom1,$idKolom2,$id){
+  global $db;
+  $row = $db->query("SELECT karya_ilmiah.id_karya, judul, tanggal, jenis, dana, pendana, dokumen
+          FROM ".$table1." JOIN ".$table2."
+          ON ".$table1.".".$idKolom1." = ".$table2.".".$idKolom1."
+          WHERE ".$table1.".".$idKolom2." = '".$id."'");
+  return runQuery($row);
+}
+
+function getKontributorSpesificRow ($table1,$table2,$idKolom1,$idKolom2,$id){
+  global $db;
+  $row = $db->query("SELECT nama, foto, dosen.nip
+          FROM ".$table1." JOIN ".$table2."
+          ON ".$table1.".".$idKolom1." = ".$table2.".".$idKolom1."
+          WHERE ".$table1.".".$idKolom2." = '".$id."'");
+  return runQuery($row);
+}
+
 function getROwDistinct($table,$kolom){
   global $db;
   $row = $db->query("SELECT DISTINCT ".$kolom." FROM ".$table);

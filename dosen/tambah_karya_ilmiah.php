@@ -12,10 +12,10 @@ $arrListDosen = getAllRow('dosen');
 
 //================KODE KEGIATAN
 
-$rowDosen = getSpesificRow('dosen','NIP',$NIP);
+$rowDosen = getSpesificRow('dosen','nip',$NIP);
 if (checkQueryExist($rowDosen)){
   while ($dosen = $rowDosen->fetch_object()) {
-    $nip = $dosen->NIP;
+    $nip = $dosen->nip;
   }
 }
 
@@ -26,9 +26,9 @@ if(isset($_POST['tambah'])){
   $tanggal = readInput($_POST['tanggal']);
   $arrtgl = explode("-",$tanggal);
   $selectedNip = $_POST['listDosen'];
-  print_r($selectedNip);
+//  print_r($selectedNip);
   $jumlahDosen = sizeof($selectedNip);
-  echo "jumlah dosen : ".$jumlahDosen;
+//  echo "jumlah dosen : ".$jumlahDosen;
 
 //  $subNip = str_split($NIP,4);
   $kodeKarya = $jenis.$arrtgl[1].$arrtgl[2];
@@ -56,16 +56,17 @@ if(isset($_POST['tambah'])){
 
   if (in_array('',$arrayKarya)) {
     $notif = 3;//null data
-    echo "null";
+//    echo "null";
+//    print_r($arrayKarya);
   }else{
     if (!checkKaryaExist($kodeKarya)) {
       if (tambahKarya($arrayKarya)) {
         $notif = 1;//sukses
-        echo "array1 sukses";
+  //      echo "array1 sukses";
 //        header('Location: info_dosen.php?q='$nip)
       }else {
         $notif = 2;//duplikasi
-        echo "array karya duplikasi";
+//        echo "array karya duplikasi";
         //include_once('../include/list_kegiatan.php');
       }
     }
@@ -74,23 +75,23 @@ if(isset($_POST['tambah'])){
 
   for ($i=0; $i<=$jumlahDosen-1; $i++) {
     $arrayTmp = array(); //===rray for table kegiatan_dosen
-    array_push($arrayTmp, $selectedNip[$i]);
-    array_push($arrayTmp,$idKarya);
-    if (in_array('',$arrayKarya)) {
+    array_push($arrayTmp, !empty($_POST['listDosen']) ? $selectedNip[$i] : '');
+    array_push($arrayTmp, $idKarya);
+    if (in_array('',$arrayTmp) && in_array('',$arrayKarya)) {
       $notif = 3;//null data
-      echo "null";
+//      echo "null";
     }else{
       if (tambahKaryaDosen($arrayTmp)) {
         $notif = 1;//sukses
-        echo "array2-".$i." sukses";
+//        echo "array2-".$i." sukses";
   //        header('Location: info_dosen.php?q='$nip)
       }
       else {
         $notif = 4;
-        echo "notif 4";
+//        echo "notif 4";
       }
     }
-    print_r($arrayTmp);
+//    print_r($arrayTmp);
     unset($arrayTmp);
   }
 
@@ -137,7 +138,8 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Jumlah Dana</td>
                     <td class="colon">:</td>
-                    <td colspan="4"><p style="width:5%; display:inline;">Rp.</p><input type="text" name="dana" style="width:95%; display:inline-block;" maxlength="10" ></td>
+                    <td colspan="4"><span style="width:5%; margin-right: -20px; ">Rp.</span>
+                      <input type="text" step="100000" name="dana" class="dana" value="1500000" style="width:95%; display:inline-block; padding-left: 20px;" maxlength="10" ></td>
                   </tr>
                   <tr>
                     <td>Sumber Dana</td>
@@ -145,10 +147,10 @@ if(isset($_POST['tambah'])){
                     <td >
                       <select id="pendana" name="pendana" <?=empty($selectedPendana) ? 'required' : ''?> >
                         <option selected disabled value=''>- Pilih Sumber Dana -</option>;
-                        <option value='P'>Universitas</option>;
-                        <option value='A'>Jurusan</option>;
-                        <option value='J'>Pribadi</option>;
-                        <option value='M'>Sponsor</option>;
+                        <option value='U'>Universitas</option>;
+                        <option value='J'>Jurusan</option>;
+                        <option value='P'>Pribadi</option>;
+                        <option value='S'>Sponsor</option>;
                       </select>
                     </td>
                   </tr>
@@ -167,6 +169,12 @@ if(isset($_POST['tambah'])){
                       ?>
                     </td>
                   </tr>
+                  <tr>
+                    <td>Link Dokumen</td>
+                    <td class="colon">:</td>
+                    <td colspan="4"><input type="text" name="url"></td>
+                  </tr>
+                  <tr>
                 </table>
 
                 <div class="form-group kanan-align" style="margin-right:10%;">
@@ -185,10 +193,13 @@ if(isset($_POST['tambah'])){
     <?php include_once('../include/footer.php'); ?>
     <script>
     $(document).ready(function(){
-      $('#listDosen').selectize({plugins:['remove_button']
-      });
-
+      $('#listDosen').selectize({plugins:['remove_button'] });
     });
+    $(document).ready(function(){
+      $('.dana').mask('000.000.000.000', {reverse: true});
+    });
+
+
     </script>
     <?php
     if (isset($notif)) {

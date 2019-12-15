@@ -277,4 +277,32 @@ function countQueryKarya($jenis){
   }
 }
 
+function castJenisKarya($jenis){
+  switch ($jenis) {
+    case 'P': $jenis_karya = "Paper";
+    break;
+    case 'A': $jenis_karya = "Artikel";
+    break;
+    case 'J': $jenis_karya = "Jurnal";
+    break;
+    case 'M': $jenis_karya = "Modul";
+    break;
+  }
+  return $jenis_karya;
+}
+
+function castPendana($pendana){
+  switch ($pendana) {
+    case 'U': $pAnggar = "Universitas Diponegoro";
+    break;
+    case 'J': $pAnggar = "Prodi Kimia";
+    break;
+    case 'P': $pAnggar = "Dana Pribadi";
+    break;
+    case 'S': $pAnggar = "Modal Sponsor";
+    break;
+  }
+  return $pAnggar;
+}
+
 ?>

@@ -13,10 +13,10 @@ $arrListDosen = getAllRow('dosen');
 
 //================KODE KEGIATAN
 
-$rowDosen = getSpesificRow('dosen','NIP',$NIP);
+$rowDosen = getSpesificRow('dosen','nip',$NIP);
 if (checkQueryExist($rowDosen)){
   while ($dosen = $rowDosen->fetch_object()) {
-    $nip = $dosen->NIP;
+    $nip = $dosen->nip;
   }
 }
 
@@ -74,9 +74,9 @@ if(isset($_POST['tambah'])){
 
   for ($i=0; $i<=$jumlahDosen-1; $i++) {
     $arrayTmp = array(); //===rray for table kegiatan_dosen
-    array_push($arrayTmp, $selectedNip[$i]);
-    array_push($arrayTmp,$idKegiatan);
-    if (in_array('',$arrayKegiatan)) {
+    array_push($arrayTmp,!empty($_POST['listDosen']) ? $selectedNip[$i] : '');
+    array_push($arrayTmp, $idKegiatan);
+    if (in_array('',$arrayTmp)) {
       $notif = 3;//null data
       echo "null";
     }else

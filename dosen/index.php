@@ -12,11 +12,11 @@ $gambar = "no_pict23.png";
 
 //--------------read q input
 
-  $row = getSpesificRow('dosen','NIP',$NIP);
+  $row = getSpesificRow('dosen','nip',$NIP);
   if (checkQueryExist($row)) {
     while ($dosen = $row->fetch_object()) {
       $nama = $dosen->nama;
-      $nip = $dosen->NIP;
+      $nip = $dosen->nip;
       $ttl = $dosen->TTL;
       $alamat = $dosen->alamat;
       $email = $dosen->email;

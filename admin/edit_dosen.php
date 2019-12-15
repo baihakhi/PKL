@@ -13,12 +13,12 @@ $gambar = "no_pict23.png";
 //--------------read q input
 if (isset($_GET['q'])) {
   $q = readInput($_GET['q']);
-  $row = getSpesificRow('dosen','NIP',$q);
+  $row = getSpesificRow('dosen','nip',$q);
 
   if (checkQueryExist($row)) {
     while ($dosen = $row->fetch_object()) {
       $nama = $dosen->nama;
-      $nip = $dosen->NIP;
+      $nip = $dosen->nip;
       $ttl = $dosen->TTL;
       $alamat = $dosen->alamat;
       $email = $dosen->email;
@@ -71,7 +71,7 @@ if(isset($_POST['ubah'])){
 
       if ($upload_ok == 1){
         if (is_uploaded_file($_FILES['userfile']['tmp_name'])){
-          if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $target_dir . $_POST['NIP'] .'.jpg')){
+          if (move_uploaded_file($_FILES['userfile']['tmp_name'], $target_dir . $_POST['NIP'] .'.jpg')){
             $notif = 1;
             $upfoto = 1;
           }
