@@ -5,8 +5,8 @@ $(document).ready(function(){
   });
 
   var btnDefault = '<button class="btn waves-effect waves-light red" onClick="$(this).TryDelete();"><i class="fa fa-trash-o fa-2x"> delete</i></button>';
-  var btnYes = '<button class="btn waves-effect waves-light yellow" onClick="$(this).DoDelete();" style="margin-right:5px;"><i class="material-icons fa fa-check-square-o black-text"></i></button>';
-  var btnNo = '<button class="btn waves-effect waves-light green" onClick="$(this).CancelDelete();"><i class="material-icons black-text">cancel</i></button>';
+  var btnYes = '<button class="btn waves-effect waves-light yellow" onClick="$(this).DoDelete();" style="margin-right:5px;"><i class="material-icons fa fa-check-square-o black-text cancel"></i></button>';
+  var btnNo = '<button class="btn waves-effect waves-light green" onClick="$(this).CancelDelete();"><i class="material-icons fa fa-times-circle black-text"></i></button>';
   $.fn.TryDelete = function() {
     this.parent().html(btnYes+btnNo);
   };

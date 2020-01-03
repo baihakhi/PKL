@@ -4,8 +4,7 @@
 <link href="../assets/css/materialize.min.css" rel="stylesheet">
 <link href="../assets/css/notie.min.css" rel="stylesheet">
 <link href="../assets/css/selectize.css" rel="stylesheet" type="text/css" />
-<link href="../assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
-<link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
 <!--
 <link href="<?= BASE;?>/css/style.css" rel="stylesheet">
 -->

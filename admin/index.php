@@ -1,10 +1,9 @@
 <?php
+session_start();
 
-$status = "admin";
-$level = "Administrator";
 
 include('../include/function.php');
-include_once('../include/sidebar.php');
+include('../include/sidebar.php');
 
 $arrDosen = getAllRow('dosen');
 ?>
@@ -23,7 +22,7 @@ $arrDosen = getAllRow('dosen');
             <?php
             while ($dosen = $arrDosen->fetch_object()) {
               $nip = $dosen->nip;
-              $nama = $dosen->nama;
+              $namad = $dosen->nama;
               ?>
               <tbody>
 
@@ -31,7 +30,7 @@ $arrDosen = getAllRow('dosen');
                   <td>
                   <a  href=info_dosen.php?q=<?= $nip ?>>
                     <div class="clicked-list">
-                      <?= $nama ?>
+                      <?= $namad ?>
                     </div>
                   </a>
                   </td>
@@ -42,9 +41,9 @@ $arrDosen = getAllRow('dosen');
                     </div>
                   </a>
                   </td>
-                  <td style="width:10%">
-                    <div class="center" data-id="<?= $nip ?>" data-class="dosen">
-                      <button class="btn waves-effect waves-light red" onClick="$(this).TryDelete();"><i class="fa fa-trash-o fa-2x"> delete</i></button>
+                  <td style="width:15%">
+                    <div class="center opt" data-id="<?= $nip ?>" data-class="dosen">
+                      <button class="btn waves-red" onClick="$(this).TryDelete();"><i class="fa fa-trash-o fa-2x"> delete</i></button>
                     </div>
                   </td>
                 </tr>

@@ -1,24 +1,23 @@
 <?php
 
 
-$status = "dosen";
-$level = "Dosen";
-$NIP = "199801012001020212";
+session_start();
 
 include_once('../include/function.php');
 include_once('../include/sidebar.php');
 
-$arrListDosen = getAllRow('dosen');
-//$selectedNip = array();
-
 //================KODE KEGIATAN
 
-$rowDosen = getSpesificRow('dosen','nip',$NIP);
+$rowDosen = getSpesificRow('dosen','nip',$_SESSION['username']);
 if (checkQueryExist($rowDosen)){
   while ($dosen = $rowDosen->fetch_object()) {
-    $nip = $dosen->nip;
+    $nipex = $dosen->nip;
+    $namaex = $dosen->nama;
   }
 }
+
+$arrListDosen = excludeDosen($nipex);
+//$selectedNip = array();
 
 
 if(isset($_POST['tambah'])){
@@ -27,9 +26,7 @@ if(isset($_POST['tambah'])){
   $tanggal = readInput($_POST['tanggal']);
   $arrtgl = explode("-",$tanggal);
   $selectedNip = $_POST['listDosen'];
-  print_r($selectedNip);
   $jumlahDosen = sizeof($selectedNip);
-  echo "jumlah dosen : ".$jumlahDosen;
 
 //  $subNip = str_split($NIP,4);
   $kodeKegiatan = $jenis.$arrtgl[1].$arrtgl[2];
@@ -61,11 +58,11 @@ if(isset($_POST['tambah'])){
     if (!checkKegiatanExist($kodeKegiatan)) {
       if (tambahKegiatan($arrayKegiatan)) {
         $notif = 1;//sukses
-        echo "array1 sukses";
+//        echo "array1 sukses";
 //        header('Location: info_dosen.php?q='$nip)
       }else {
         $notif = 2;//duplikasi
-        echo "array kegiatan duplikasi";
+//        echo "array kegiatan duplikasi";
         //include_once('../include/list_kegiatan.php');
       }
     }
@@ -78,18 +75,17 @@ if(isset($_POST['tambah'])){
     array_push($arrayTmp, $idKegiatan);
     if (in_array('',$arrayTmp)) {
       $notif = 3;//null data
-      echo "null";
+//      echo "null";
     }else
       if (tambahKegiatanDosen($arrayTmp)) {
         $notif = 1;//sukses
-        echo "array2-".$i." sukses";
+//        echo "array2-".$i." sukses";
   //        header('Location: info_dosen.php?q='$nip)
       }
       else {
         $notif = 4;
-        echo "notif 4";
+//        echo "notif 4";
       }
-    print_r($arrayTmp);
     unset($arrayTmp);
   }
 
@@ -124,7 +120,7 @@ if(isset($_POST['tambah'])){
                     <td>Jenis Kegiatan</td>
                     <td class="colon">:</td>
                     <td >
-                      <select id="jenis-kegiatan" name="jenis-kegiatan">
+                      <select id="jenis-kegiatan" name="jenis-kegiatan" required>
                         <option selected disabled value=''>- Pilih Jenis Kegiatan -</option>;
                         <option value='R'>Rapat</option>;
                         <option value='S'>Seminar</option>;
@@ -153,9 +149,20 @@ if(isset($_POST['tambah'])){
                     <td>Kontributor</td>
                     <td class="colon">:</td>
                     <td colspan="4" style="width:75%;">
-                      <?php
-                        include_once('../include/input_dosen.php');
-                      ?>
+
+                      <div class="input-field col s12">
+                        <select id="listDosen" name="listDosen[]" multiple="multiple" <?=empty($selectedDosen) ? 'required' : ''?> ">
+                          <?php
+                            $selectedDosen = '';
+
+                            echo '<option value='.$nipex.' selected >'.$namaex.'</option>';
+                          while ($lDosen = $arrListDosen->fetch_object()) {
+                            echo '<option value='.$lDosen->nip.' '.(($lDosen->nip == $selectedDosen) ? 'selected' : '').'>'.$lDosen->nama.'</option>';
+                          }
+                          ?>
+                        </select>
+                      </div>
+
                     </td>
                   </tr>
                 </table>

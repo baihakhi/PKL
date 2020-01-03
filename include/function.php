@@ -6,10 +6,10 @@ require_once ('global_function.php');
 
 
 //------------------------------admin login function
-function login ($table,$username,$password){
+function login ($table,$kolom,$username,$password){
   global $db;
 
-  $query = $db->query("SELECT * FROM ".$table." WHERE username='.$username.'");
+  $query = $db->query("SELECT * FROM ".$table." WHERE ".$kolom."='".$username."' ");
   if ($query->num_rows > 0){
 
     $data = $query->fetch_object();
@@ -17,37 +17,54 @@ function login ($table,$username,$password){
       return true;
     }
     else {
-      return showAlert(2,"Password dan username tidak cocok");
+      return false;
     }
   }
   else{
-    return showAlert(2,"username tidak ditemukan");
+    return false;
   }
-  return true;
-  //echo $query;
 }
 
-/*
-function getAdmin ($username){
 
-  $admin = $query->fetch_object();
-  $nama = $admin->nama;
+function getAdminDosen ($username){
+  global $db;
+
+  $query = $db->query("SELECT admin.password, dosen.nip, dosen.nama, dosen.alamat, dosen.email, dosen.foto
+            FROM admin JOIN dosen
+            ON admin.nip=dosen.nip
+            WHERE admin.username='".$username."' ");
+  return $query;
 }
-*/
 
+function getDosen ($username){
+  global $db;
+
+  $query = $db->query("SELECT * FROM dosen WHERE nip='".$username."' ");
+  return $query;
+}
+
+function editPassword ($table, $colId, $id, $data){
+  global $db;
+
+  $query = $db->query("UPDATE ".$table." SET password='".$data."' WHERE ".$colId." = '".$id."'  ");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function editAdmin($username, $arr){
+  global $db;
+
+  $query = $db->query("UPDATE admin SET username='".$arr[0]."', nip='".$arr[1]."' WHERE username = '".$username."'  ");
+  return isset($query) ? checkQuery($query) : false;
+}
 
 //------------------------------FUNGSI DATA DOSEN
 //input data dosen function
 function checkDosenExist ($arr){
   global $db;
   $NIP = $arr[0];
-  $nama = $arr[1];
-  $TTL = $arr[2];
-  $email = $arr[3];
-  $alamat = $arr[4];
-  $foto = $arr[5];
 
-  $query = $db->query("SELECT * FROM dosen WHERE NIP='$NIP' ");
+  $query = $db->query("SELECT * FROM dosen WHERE nip='$NIP' ");
   return checkQueryExist($query);
 }
 
@@ -110,8 +127,38 @@ function checkMapelExist ($arr){
 function tambahMapel ($arr){
   global $db;
 
-  $query = $db->query("INSERT INTO mapel (kode, nama, fakultas, jurusan, tempat, hari, jamawal, jamakhir)
-  VALUES ('$arr[0]','$arr[1]','$arr[2]','$arr[3]','$arr[4]','$arr[5]','$arr[6]','$arr[7]')");
+  $query = $db->query("INSERT INTO mapel (kode, nama, fakultas, jurusan, tempat, hari, semester, jamawal, jamakhir)
+  VALUES ('$arr[0]','$arr[1]','$arr[2]','$arr[3]','$arr[4]','$arr[5]','$arr[6]','$arr[7]','$arr[8]')");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function getAllDay($day,$date){
+
+    $days = array();
+    $tgl = date_create($date);
+    $dt = strtotime("$date $day"); // Black magic :-)
+    $wk = 0;
+    $m = date('n',$dt);
+    $d = date('d',$dt);
+    $y = $tgl->format('Y');
+
+    while ($wk < 8) {
+        $days[] = date('Y-n-d',mktime(0,0,0,$m,$d,$y));
+        echo $days[$wk]."dari fn \n";
+        $d += 7;
+        $wk++;
+    }
+
+    return $days;
+}
+
+function tambahMengampu ($arr){
+  global $db;
+ print_r($arr);
+  $query = $db->query(
+    "INSERT INTO mengampu (nip, kode, tanggal)
+    VALUES ('$arr[0]','$arr[1]','$arr[2]') ");
 
   return isset($query) ? checkQuery($query) : false;
 }
@@ -138,7 +185,7 @@ function hapusData($class,$id){
   global $db;
   switch ($class) {
     case 'dosen':
-      $data = 'NIP';
+      $data = 'nip';
       break;
 
     case 'mapel':
@@ -164,6 +211,13 @@ function checkKegiatanExist ($arr){
 
   $query = $db->query("SELECT * FROM kegiatan WHERE kegiatan.judul = '".$judul."'AND kegiatan.kode LIKE '".$kode."%' ");
   return checkQueryExist($query);
+}
+
+function excludeDosen ($nip){
+  global $db;
+
+  $query = $db->query("SELECT * FROM dosen WHERE nip != '$nip' ");
+  return runQuery($query);
 }
 
 function getSpesificKegiatan($jenis){
@@ -291,11 +345,25 @@ function castJenisKarya($jenis){
   return $jenis_karya;
 }
 
+function castJenisKegiatan($jenis){
+  switch ($jenis) {
+    case 'K': $jenis_kegiatan = "Keperluan Penelitian";
+    break;
+    case 'P': $jenis_kegiatan = "Pelatihan/Workshop";
+    break;
+    case 'R': $jenis_kegiatan = "Rapat";
+    break;
+    case 'S': $jenis_kegiatan = "Seminar";
+    break;
+  }
+  return $jenis_kegiatan;
+}
+
 function castPendana($pendana){
   switch ($pendana) {
     case 'U': $pAnggar = "Universitas Diponegoro";
     break;
-    case 'J': $pAnggar = "Prodi Kimia";
+    case 'J': $pAnggar = "Departemen Kimia";
     break;
     case 'P': $pAnggar = "Dana Pribadi";
     break;

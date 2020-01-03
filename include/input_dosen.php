@@ -4,7 +4,7 @@
       $selectedDosen = '';
 
     while ($lDosen = $arrListDosen->fetch_object()) {
-      echo '<option value='.$lDosen->NIP.' '.(($lDosen->NIP == $selectedDosen) ? 'selected' : '').'>'.$lDosen->nama.'</option>';
+      echo '<option value='.$lDosen->nip.' '.(($lDosen->nip == $selectedDosen) ? 'selected' : '').'>'.$lDosen->nama.'</option>';
     }
     ?>
   </select>

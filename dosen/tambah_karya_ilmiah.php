@@ -1,9 +1,5 @@
 <?php
-
-
-$status = "dosen";
-$level = "Dosen";
-$NIP = "199801012001020212";
+session_start();
 
 include_once('../include/function.php');
 include_once('../include/sidebar.php');

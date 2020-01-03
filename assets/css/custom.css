@@ -420,6 +420,17 @@ background-color: #FFF;
   z-index: 9;
 }
 
+.form-popup .kbm {
+  background-color: #ead9d9;
+}
+
+.popup-kanan{
+  right: 10px;
+}
+
+.col-50{
+  width:49%;
+}
 /* Small devices (tablets, 768px and up) */
 @media (max-width: 768px) {
     .form-popup{
@@ -621,6 +632,7 @@ line-height: 1.428571429;
       width: -webkit-fill-available;
     }
     .top-right {
+      padding: 0 6px 0 8px;
       position: absolute;
       top: 8px;
       right: 10px;
@@ -631,7 +643,44 @@ line-height: 1.428571429;
       width: 100px
     }
 
-
+    /*==============================================
+        FOTO KONTRIBUTOR
+        =============================================*/
+    .calendar .header{
+      border-style: solid solid double solid;
+      border-color: 4d4d4d;
+    }
+    .calendar .day{
+      border-style: solid;
+      border-color: 4d4d4d;
+    }
+    table.calender{
+      border: 1px solid 4d4d4d;
+    }
+    caption{
+      font-size: 22pt; margin: 10px 0 20px 0; font-weight: 700;
+    }
+    table.calendar{
+      width:100%; border:1px solid #000;
+    }
+    td.day{
+      width: 14%; height: 140px; border: 1px solid #000; vertical-align: top;
+    }
+    td.day span.day-date{
+      font-size: 14pt; font-weight: 700;
+    }
+    th.header{
+      background-color: #003972; color: #fff; font-size: 14pt; padding: 5px;
+    }
+    .not-month{
+      background-color: #a6c3df;
+    }
+    td.today {
+      background-color:#efefef;
+    }
+    td.day span.today-date{
+      font-size: 16pt;
+    }
 
 /*==============================================
     MEDIA QUERIES

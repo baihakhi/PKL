@@ -92,9 +92,13 @@ if (isset($_GET['q'])) {
                 <img src="<?= $profilPict; ?>" alt="foto dosen" border="5px" class="foto-profil" onerror="this.onerror=null;../images/no_pict23.png;">
               </div>
             </div>
-            <div class="kanan-align">
-              <a href="lihat_karya.php?q=<?= $nip ?>">lihat jadwal</a>
-            </div>
+            <?php
+            if ($q==$_SESSION['username']) {
+              echo "<div class='kanan-align'>
+                      <a href='lihat_karya.php?q=".$nip."'>lihat jadwal</a>
+                    </div>";
+            }
+            ?>
             <div class="row">
               <table class="center" style="max-width:780px;">
                 <tr>

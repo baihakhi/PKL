@@ -1,5 +1,6 @@
 <?php
 //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+
 session_start();
 
 $status = "admin";
@@ -29,19 +30,6 @@ while ($kegiatan = $arrKegiatan->fetch_object()) {
 //--------------call calendar
 //$dateComponents = date_create("2020-1-1");
 //--------------read q input
-if (isset($_GET['m'])){
-  $month = $_GET['m'];
-  $year = $_GET['y'];
-  $firstDayOfMon = mktime(0,0,0,$month,1,$year);
-  $dateComponents = getdate($firstDayOfMon);
-  $monthString = $dateComponents['month'];
-}else{
-      $dateComponents = getdate();
-      $monthString = $dateComponents['month'];
-      $month = $dateComponents['mon'];
-      $year = $dateComponents['year'];
-}
-
 if (isset($_GET['q'])) {
   $q = readInput($_GET['q']);
   $row = getSpesificRow('dosen','nip',$q);
@@ -66,6 +54,9 @@ if (isset($_GET['q'])) {
         $target_dir = "../assets/image/";
       }
     }
+
+
+    $m='';
 
   }
   else {
@@ -94,6 +85,20 @@ else {
           <div class="full-bar">
             <div id='dp'>
               <?php
+              if ($m == ""){
+
+                  $dateComponents = getdate();
+                  $monthString = $dateComponents['month'];
+                  $month = $dateComponents['mon'];
+                  $year = $dateComponents['year'];
+                 } else {
+                   $month = $m;
+                   $year = $y;
+                   $firstDayOfMon = mktime(0,0,0,$month,1,$year);
+                   $dateComponents = getdate($firstDayOfMon);
+                   $monthString = $dateComponents['month'];
+
+                 }
                echo build_previousMonth($month, $year, $monthString, $q);
                echo build_nextMonth($month,$year,$monthString, $q);
                echo build_calendar($month,$year,$dateComponents, $q);

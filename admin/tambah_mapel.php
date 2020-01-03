@@ -1,29 +1,55 @@
 <?php
 
+session_start();
+
 include_once('../include/function.php');
 include_once('../include/sidebar.php');
 
+$arrLab = getAllRow('laboratorium');
+$arrListDosen = getAllRow('dosen');
+$today = getdate();
+$year = $today['year'];
+
 
 if(isset($_POST['tambah'])){
-  //kamus dosen
-  $TTL    = readInput($_POST['KL']).",".readInput($_POST['TL']);
 
-  array_push($array,!empty($_POST['id_mapel']) ? readInput($_POST['id_mapel']) : '');
-  array_push($array,!empty($_POST['nama_mapel']) ? readInput($_POST['nama_mapel']) : '');
-//  array_push($array,!empty($_POST['KL']) && !empty($_POST['TL']) ? $TTL : '');
-array_push($array,!empty($_POST['jurusan']) ? readInput($_POST['jurusan']) : '');
-array_push($array,!empty($_POST['semester']) ? readInput($_POST['semester']) : '');
+  //================KAMUS-MATKUL
+  $array = array();
+  $kodeMP = readInput($_POST['kode']);
+
+  if ($_POST['smt']='ganjil') {
+    // code...
+    $smt = 1;
+    $dateUts =$year.'-08-01';
+    $dateUas =$year.'-10-01';
+//    echo "SMT = ".$smt;
+  }elseif ($_POST['smt']='genap') {
+    // code...
+    $smt = 0;
+    $dateUts =$year.'-02-01';
+    $dateUas =$year.'-04-01';
+//    echo "SMT = ".$smt;
+
+  }
+
+  array_push($array,!empty($_POST['kode']) ? $kodeMP : '');
+  array_push($array,!empty($_POST['nama']) ? readInput($_POST['nama']) : '');
+  array_push($array,!empty($_POST['fakultas']) ? readInput($_POST['fakultas']) : '');
+  array_push($array,!empty($_POST['jurusan']) ? readInput($_POST['jurusan']) : '');
   array_push($array,!empty($_POST['tempat']) ? readInput($_POST['tempat']) : '');
   array_push($array,!empty($_POST['hari']) ? readInput($_POST['hari']) : '');
-  array_push($array,!empty($_POST['waktu']) ? readInput($_POST['waktu']) : '');
+  array_push($array,!empty($_POST['smt']) ? $smt : '');
+  array_push($array,!empty($_POST['T1']) ? readInput($_POST['T1']) : '');
+  array_push($array,!empty($_POST['T2']) ? readInput($_POST['T2']) : '');
 
   if (in_array('',$array)) {
     $notif = 3;
   }
   else {
-    if (!checkDosenExist($_POST['id_mapel'])) {
-      if (tambahDosen($array)) {
+    if (!checkMapelExist($kodeMP)) {
+      if (tambahMapel($array)) {
         $notif = 1;
+//        header('Location: info_dosen.php?q='$nip)
       }
       else {
         $notif = 2;
@@ -33,6 +59,58 @@ array_push($array,!empty($_POST['semester']) ? readInput($_POST['semester']) : '
       $notif = 4;
     }
   }
+
+  $selectedNip1 = readInput($_POST['listDosenUts']);
+  $selectedNip2 = readInput($_POST['listDosenUas']);
+  $arrayTmp1 = array(); //===rray for table kegiatan_dosen
+  $arrayTmp2 = array(); //===rray for table kegiatan_dosen
+  array_push($arrayTmp1,!empty($_POST['listDosenUts']) ? $selectedNip1 : '');
+  array_push($arrayTmp2,!empty($_POST['listDosenUas']) ? $selectedNip2 : '');
+  array_push($arrayTmp1,!empty($_POST['kode']) ? $kodeMP : '');
+  array_push($arrayTmp2,!empty($_POST['kode']) ? readInput($_POST['kode']) : '');
+
+  $kbmUts = getAllDay($_POST['hari'], $dateUts);
+  $kbmUas = getAllDay($_POST['hari'], $dateUas);
+  $jumlahDay = count($kbmUts);
+
+  for ($d=0; $d<$jumlahDay ; $d++) {
+//    echo "---ITERASI ".$d."---";
+//    $kkb1 = date_create($kbmUts[$d]);
+//    $kkb2 = date_create($kbmUas[$d]);
+    $date1 = $kbmUts[$d];
+    $date2 = $kbmUas[$d];
+//    print_r($kkb1);
+//    echo $date1."  kbm uts 1 \n";
+    $arrayTmp1 = array(); //===rray for table kegiatan_dosen
+    $arrayTmp2 = array(); //===rray for table kegiatan_dosen
+    array_push($arrayTmp1, $selectedNip1);
+    array_push($arrayTmp1, $kodeMP);
+    array_push($arrayTmp1, $date1);
+
+    array_push($arrayTmp2, $selectedNip2);
+    array_push($arrayTmp2, $kodeMP);
+    array_push($arrayTmp2, $date2);
+
+    if (in_array('',$arrayTmp1) || in_array('',$arrayTmp2)) {
+      $notif = 3;//null data
+//      echo "null";
+    }else
+//    print_r($arrayTmp1);echo "--tmp1 \n";
+//    print_r($arrayTmp2);echo "--tmp2 \n";
+      if (tambahMengampu($arrayTmp1) && tambahMengampu($arrayTmp2)) {
+        $notif = 1;//sukses
+//        echo "array2-".$i." sukses";
+      }
+      else {
+        $notif = 4;
+//        echo "notif 4";
+      }
+    unset($arrayTmp1);
+    unset($arrayTmp2);
+  }
+
+
+
 }
 ?>
 
@@ -50,49 +128,97 @@ array_push($array,!empty($_POST['semester']) ? readInput($_POST['semester']) : '
             <h5 class="judul center-align">Input data Mata Kuliah</h5>
 
             <div class="row">
-              <form class="col s12" method="post" enctype="multipart/form-data">
+              <form class="form-horizontal col s12" method="post" enctype="multipart/form-data">
 
                 <table align="center" style="max-width:75% ;">
                   <tr>
-                    <td>Mata Kuliah</td>
+                    <td>Nama Matakuliah</td>
                     <td class="colon">:</td>
-                    <td colspan="2"><input type="text" name="nama_mapel" placeholder="Kimia Terapan"></td>
+                    <td colspan="4"><input type="text" name="nama" required></td>
                   </tr>
                   <tr>
-                    <td>Kode Mata Kuliah</td>
+                    <td>Kode Matakuliah</td>
                     <td class="colon">:</td>
-                    <td colspan="3"><input type="text" name="id_mapel" placeholder="PAC3329"></td>
+                    <td colspan="4"><input type="text" name="kode" id="kode" onkeyup="capslock()"/></td>
                   </tr>
                   <tr>
                     <td>Jurusan</td>
                     <td class="colon">:</td>
-                    <td ><input type="text" name="jurusan" value="Kimia"></td>
-                    <td >
-                      <label for="smt" style="margin:0 10px 0 20px">Semester</label>
-                      <input type="number" max="14" name="semester" id="smt" style="max-width:30%"></td>
+                    <td ><input type="text" name="jurusan" title="Nama Departen" value="Kimia" maxlenght="2"/></td>
+                    <td>Fakultas</td>
+                    <td class="colon">:</td>
+                    <td ><input type="text" name="fakultas" title="Nama Fakultas" value="FSM" maxlenght="2"/></td>
                   </tr>
                   <tr>
-                    <td>Ruangan</td>
+                    <td>Tempat</td>
                     <td class="colon">:</td>
                     <td ><input type="text" name="tempat"></td>
-                    <td >
-                      <label for="jam" style="margin:0 30px 0 20px">Hari</label>
-                      <select name="hari">
-                        <option value="senin">Senin</option>
-                        <option value="selasa">Selasa</option>
-                        <option value="Rabu">Rabu</option>
-                        <option value="Kamis">Kamis</option>
-                        <option value="Jumat">Jumat</option>
+                  </tr>
+                  <tr>
+                    <td>Waktu</td>
+                    <td class="colon">:</td>
+                    <td>
+                      <select id="hari" class="" name="hari" required>
+                        <option selected disabled value="">- Pilih Hari -</option>
+                        <option value="monday">Senin</option>
+                        <option value="tuesday">Selasa</option>
+                        <option value="wednesday">Rabu</option>
+                        <option value="thursday">Kamis</option>
+                        <option value="friday">Jumat</option>
+
                       </select>
                     </td>
+                    <td>Jam</td>
+                    <td class="colon">:</td>
                     <td >
-                      <label for="jam" style="margin:0 30px 0 20px">Waktu</label>
-                      <input type="time" autocomplete="on" name="waktu" id="jam" style="max-width:30%">
+                      <input type="time" name="T1" id="T1" style="display:inline; max-width: 40%" value="06:00" onclick="minimumTime()" onkeyup="minuteChange()">
+                      s/d
+                      <input type="time" name="T2" id="T2" style="display:inline; max-width: 40%">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Semester</td>
+                    <td class="colon">:</td>
+                    <td class="form-group">
+                      <div class="col-sm-10">
+                            <label class="radio-inline">
+                              <input type="radio" id="ganjil" name="smt" style="left:10px; margin-left:0; opacity:1;" value="ganjil" checked> Ganjil </label>
+                            <label class="radio-inline">
+                              <input type="radio" id="genap" name="smt" style="left:50%; margin-left:0; opacity:1;" value="genap"> Genap </label>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Pengampu</td>
+                    <td class="colon">:</td>
+                    <td colspan="4" style="width:75%;">
+                      <div class="input-field col s12">
+                        <span style="display:inline;">UTS</span>
+                        <select class="listDosen" name="listDosenUts" required style="margin-bottom:10px; width:93%;">
+                          <?php
+                          while ($lDosen = $arrListDosen->fetch_object()) {
+                            $nipD[] = $lDosen->nip;
+                            $namaD[] = $lDosen->nama;
+                          }
+                          $jumlahDosen = count($nipD);
+                          for ($i=0; $i<$jumlahDosen ; $i++){
+                            echo "<option value=".$nipD[$i]." ".(($nipD[$i] == $selectedDosen) ? 'selected' : '').">".$namaD[$i]."</option>";
+                          }
+                        ?>
+                        </select>
+                        <span style="display:inline;">UAS</span> <select class="listDosen" name="listDosenUas" required style="width:93%;">
+                          <?php
+                          for ($i=0; $i<$jumlahDosen ; $i++){
+                            echo "<option value=".$nipD[$i]." ".(($nipD[$i] == $selectedDosen) ? 'selected' : '').">".$namaD[$i]."</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
                     </td>
                   </tr>
                 </table>
 
-                <div class="form-group kanan-align" style="margin-right:10%"">
+                <div class="form-group kanan-align" style="margin-right:10%">
                   <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah">SUBMIT</button>
                 </div>
 
@@ -107,14 +233,35 @@ array_push($array,!empty($_POST['semester']) ? readInput($_POST['semester']) : '
 
     <?php include_once('../include/footer.php'); ?>
     <script>
-    $(document).ready(function() {
-      $('select').material_select();
-      var namaLab = $('#lab').find('option:selected').text();
-      $('#nama-lab').text(namaLab);
-      $("select[required]").css({display: "inline", height: 0, padding: 0, width: 0});
-      $(".caret").css("height", "50px");
-    });
-    </script>
+    function minimumTime() {
+        var x = document.getElementById("T1").value;
+        var hours = x.split(":")[0];
+        var minutes = x.split(":")[1];
+        hours = parseInt(hours)+1;
+          if (hours<10){
+            hours = "0"+hours;
+          }
+        x = hours+":"+minutes;
+        document.getElementById("T2").value= x;
+    }
+    function minuteChange() {
+        var x = document.getElementById("T1").value;
+        var hours = x.split(":")[0];
+        var minutes = x.split(":")[1];
+        hours = parseInt(hours)+1;
+          if (hours<10){
+            hours = "0"+hours;
+          }
+        x = hours+":"+minutes;document.getElementById("T2").value= x;
+    }
+    function capslock() {
+      var str = document.getElementById("kode").value;
+      var res = str.toUpperCase();
+      document.getElementById("kode").innerHTML= res;
+    }
+
+</script>
+
 
     <?php
     if (isset($notif)) {
@@ -123,13 +270,13 @@ array_push($array,!empty($_POST['semester']) ? readInput($_POST['semester']) : '
           echo showAlert($notif,'Nilai berhasil ditambahkan '.$errPict);
           break;
         case 2:
-          echo showAlert($notif,'Terjadi kesalahan saat proses input '.$errPict);
+          echo showAlert($notif,'Data dosen sudah ada'.$errPict);
           break;
         case 3:
           echo showAlert($notif,'Terdapat data kosong pada formulir '.$errPict);
           break;
         case 4:
-          echo showAlert($notif,'Data dosen sudah ada '.$errPict);
+          echo showAlert($notif,'Terjadi kesalahan saat proses input  '.$errPict);
           break;
       }
     }

@@ -1,8 +1,8 @@
 <?php
 
-session_start();
 unset($_SESSION['user-raport']);
+session_destroy();
 if (session_destroy){
-  header('Location: login.php');
+  header('Location: landpage/index.php');
 }
 ?>

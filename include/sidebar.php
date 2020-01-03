@@ -1,21 +1,16 @@
 <?php
-	require_once('../include/function.php');
-	global $db;
 
-
-//----------------------------------
-//	login('admin','Admin','admin1234');
-/*
-	$cek = login('admin','Admin','admin1234');
-	if ($cek == true){
-//		getAdmin('Admin');
-		$query = $db->query("SELECT * FROM admin WHERE username = 'Admin'");
-		$aktor = $query->fetch_object();
-//		echo "benar";
-	}
-	*/
-
-
+$name = $_SESSION['nama'];
+$username = $_SESSION['username'];
+$status = $_SESSION['akses'];
+$foto = $_SESSION['foto'];
+switch ($status) {
+  case 'admin': $level='Administrator';
+    break;
+  case 'dosen': $level='Dosen';
+    break;
+}
+//---------------------------------
   $site_name = "KIMIA"
 ?>
 <!DOCTYPE html>
@@ -23,15 +18,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php $site_name ?></title>
-			<!-- BOOTSTRAP STYLES-->
-    <link href="../assets/css/bootstrap.css" rel="stylesheet" />
-     	<!-- FONTAWESOME STYLES-->
-    <link href="../assets/css/font-awesome.css" rel="stylesheet" />
-    	<!-- CUSTOM STYLES-->
-    <link href="../assets/css/custom.css" rel="stylesheet" />
-     <!-- GOOGLE FONTS-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+		<title><?php $site_name ?></title>
+		  <!-- BOOTSTRAP STYLES-->
+		<link href="../assets/css/bootstrap.css" rel="stylesheet" />
+		  <!-- FONTAWESOME STYLES-->
+		<link href="../assets/css/font-awesome.css" rel="stylesheet" />
+		<link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		  <!-- CUSTOM STYLES-->
+		<link href="../assets/css/custom.css" rel="stylesheet" />
+		 <!-- GOOGLE FONTS-->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
 <body>
     <div id="wrapper">
@@ -46,17 +42,17 @@
                 <a class="navbar-brand" hKeloref="index.php"><i class="fa fa-thumbs-o-up"></i> <?php echo $site_name ?></a>
             </div>
 			<div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;">
-<!--
-				<a href="profil.php" title='Ubah Password' style="color:#fff; font-size:12px;"><i class="fa fa-lock"></i>
 
-					<?php if($status=="admin") {echo $aktor->nama." (".$level.")"; } elseif($status=="dosen") echo $dosen->nama_dosen;elseif($status=="lab") echo $lab->nama_lab;?> </a>&nbsp;&nbsp;
+				<a href="edit_profil.php?q=<?= $username ?>" title="ke laman utama" style="color:#fff; font-size:12px;"><i class="fa fa-lock"></i>
+
+					<?php if($status=="admin") {echo $name." (".$level.")"; } elseif($status=="dosen") echo $name;?> </a>&nbsp;&nbsp;
 
 				<a style="text-decoration: none; color:#fff; font-size:12px;"> <?php
 					echo " ( ".date("D, Y-m-d") . " ". date("h:ia")." )&nbsp;&nbsp;";
 				?>
 				</a>
--->
-				<a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a>
+
+				<a href="../logout.php" class="btn btn-danger square-btn-adjust">Logout</a>
 			</div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -64,7 +60,7 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
 				<li class="text-center">
-					<img src="../images/no_pict23.png" class="user-image img-responsive" height="100px"/>
+					<img src="../assets/image/<?= $foto; ?>" class="user-image img-responsive" height="100px"/>
 				</li>
 				<li>
 					<a class="active-menu" href="index.php"><i class="fa fa-dashboard fa-2x"></i> Dashboard</a>
@@ -75,7 +71,7 @@
 						<a href="#"><i class="fa fa-edit fa-2x"></i>Kelola Dosen<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li><a href="../admin/tambah_dosen.php">Input Dosen</a></li>
-							<li><a href="../admin/input_jadwal_dosen.php">Daftar Dosen</a></li>
+							<li><a href="../admin/index.php">Daftar Dosen</a></li>
 						</ul>
 					</li>';
 				}elseif ($status=="dosen") {
@@ -125,7 +121,11 @@
 				?>
 				<li>
 						<?php
-							echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Karya Ilmiah';
+            if ($status=='dosen') {
+              echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Karya ILmiah';
+            }elseif ($status=='admin') {
+              echo '<a href="#"><i class="fa fa-book fa-2x"></i> Kelola Mata Kuliah';
+            }
 						?>
 					<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
@@ -144,35 +144,19 @@
 				<?php
 					if($status=='dosen'){
 						echo '<li><a href="tambah_karya_ilmiah.php">Input Karya Ilmiah</a></li>';
-						
+
 					}
 
 				?>
 				<?php
 					if($status=='admin'){
 						echo '<li><a href="daftar_mapel.php">Daftar Matakuliah</a></li>';
-						echo '<li><a href="input_mapel.php">Tambah Matakuliah</a></li>';
+						echo '<li><a href="tambah_mapel.php">Tambah Matakuliah</a></li>';
 
 					}
 				?>
 					</ul>
 				</li>
-				<li>
-					<a href="#"><i class="fa fa-edit fa-2x"></i>Informasi<span class="fa arrow"></span></a>
-					<ul class="nav nav-second-level">
-						<li><a href="dosen_lab.php">Daftar Lab Pembimbing</a></li>
-						<?php if($status=='petugas') {
-							echo "<li><a href='input_jadwal.php'>Input Jadwal</a></li>";
-							} ?>
-						<li><a href="daftar_jadwal.php">Daftar Jadwal</a></li>
-					</ul>
-
-				</li>
-
-
-					<li>
-                        <a  href="http://localhost/sip/index.php#about"><i class="fa fa-square-o fa-2x"></i> About</a>
-					</li>
                 </ul>
             </div>
         </nav>
