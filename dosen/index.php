@@ -65,11 +65,11 @@ $gambar = "no_pict23.png";
 
       ?>
 
+
       <!DOCTYPE html>
       <html>
         <head>
           <?php include('../include/head.php') ?>
-          <title></title>
         </head>
         <body>
           <main>
@@ -91,7 +91,7 @@ $gambar = "no_pict23.png";
                     </div>
                   </div>
                   <div class="kanan-align">
-                    <a href="lihat_karya.php?q=<?= $nip ?>">lihat jadwal</a>
+                    <a href="lihat_karya.php?q=<?= $nip ?>" class="btn waves-effect" style="width:100%;">lihat jadwal</a>
                   </div>
                   <div class="row">
                     <table class="center" style="max-width:780px;">
@@ -126,11 +126,9 @@ $gambar = "no_pict23.png";
                         <td><?php echo $nama_lab; ?></td>
                       </tr>
                     </table>
-                    <table name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
-                      <tbody align="center">
-                        <tr>
-                          <td colspan="5" class="center-align judul">Daftar Karya ilmiah</td>
-                        </tr>
+                    <table class="" name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
+                      <th colspan="5" class="center-align judul">Daftar Karya ilmiah</th>
+                      <tbody align="center" class="cornered">
                         <tr>
                           <td class="judul-tabel" style="width: 50%">Judul</td>
                           <td class="judul-tabel">Jenis Karya</td>
@@ -140,7 +138,7 @@ $gambar = "no_pict23.png";
                         if ($numKarya>0) {
                           for ($i=0; $i<$numKarya ; $i++) {
                             echo "<tr class='open-button' onclick='$(this).openForm();' data-id='".$idKarya[$i]."'>";
-                            echo  "<td class='left'>".$judul[$i]."</td>";
+                            echo  "<td class=''>".$judul[$i]."</td>";
 
                             $jenis_karya[$i] = castJenisKarya($jenis[$i]);
                             $pAnggar[$i] = castPendana($pendana[$i]);

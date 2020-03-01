@@ -35,7 +35,7 @@ if (!empty($_POST['password'])) {
   // code...
  $password = readInput($_POST['password']);
 
-     if (editPassword('admin','username',$username,$passwordZ)) {
+  if (editPassword('admin','username',$username,$passwordZ)) {
         $notif = 1;
 //        print_r($array);
        header('Location: index.php');
@@ -45,11 +45,7 @@ if (!empty($_POST['password'])) {
      }
 }
 elseif (empty($_POST['password'])) {
-  if (in_array('',$array)) {
-    $notif = 3;
-  }
-    else {
-      if (editAdmin($username,$array)) {
+    if (editAdmin($username,$array)) {
          $notif = 1;
  //        print_r($array);
         header('Location: index.php');
@@ -61,10 +57,8 @@ elseif (empty($_POST['password'])) {
     echo "ga ada password \n";
 
 }else {
-  $notif =4;
+  $notif = 3;
 }
-}
-
 
 ?>
 

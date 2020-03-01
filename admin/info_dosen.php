@@ -92,7 +92,7 @@ if (isset($_GET['q'])) {
                 <img src="<?= $profilPict; ?>" alt="foto dosen" border="5px" class="foto-profil" onerror="this.onerror=null;../images/no_pict23.png;">
               </div>
             </div>
-            <div class="kanan-align">
+            <div class="kanan-align btn waves-effect" style="width:11%">
               <a href="lihat_karya.php?q=<?= $nip ?>">lihat jadwal</a>
             </div>
             <div class="row">
@@ -129,20 +129,21 @@ if (isset($_GET['q'])) {
                 </tr>
               </table>
               <table name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
-                <tbody align="center">
+                <tbody class="cornered" align="center">
                   <tr>
                     <td colspan="5" class="center-align judul">Daftar Karya ilmiah</td>
                   </tr>
-                  <tr>
+                  <tr class="judul-tabel">
                     <td class="judul-tabel" style="width: 50%">Judul</td>
                     <td class="judul-tabel">Jenis Karya</td>
                     <td class="judul-tabel">Tanggal</td>
                   </tr>
+
                   <?php
                   if ($numKarya>0) {
                     for ($i=0; $i<$numKarya ; $i++) {
                       echo "<tr class='open-button' onclick='$(this).openForm();' data-id='".$idKarya[$i]."'>";
-                      echo  "<td class='left'>".$judul[$i]."</td>";
+                      echo  "<td class=''>".$judul[$i]."</td>";
 
                       $jenis_karya[$i] = castJenisKarya($jenis[$i]);
                       $pAnggar[$i] = castPendana($pendana[$i]);
@@ -194,6 +195,9 @@ if (isset($_GET['q'])) {
                                   <div id='pAnggaran".$i."'> ".$pAnggar[$i]."</div>
                                   </div>
                               </div>";
+                      echo      "<div class='col-25'>
+                                  <span style='font-weight:700;'>Kontributor</span>
+                                </div>";
                                 for ($j=0; $j<$numKontributor[$i] ; $j++) {
                                   $d_foto_k[$i][$j] = $target_dir . $foto_k[$i][$j];
                       echo   "<a href=info_dosen.php?q=".$nip_k[$i][$j].">

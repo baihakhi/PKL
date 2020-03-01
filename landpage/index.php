@@ -5,10 +5,11 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 include('../include/function.php');
 
 if (isset($_POST["submit"])){
-	$level= readInput($_POST['status']);
-	$username = $_POST['username'];
+	$level= $_POST["status"];
+	$username = $_POST['uname'];
 	$password = $_POST['password'];
 	$pass = md5($password);
+	echo "level= ".$level." username= ".$username;
 		if ($level == dosen) {
 			$status=login($level,'nip',$username,$pass);
 				if ($status==true) {
@@ -28,7 +29,6 @@ if (isset($_POST["submit"])){
 				$notif = 1;
 			}else {
 				$notif = 2;
-				echo "salah dosen";
 			}
 		}elseif ($level == admin ) {
 				$status=login($level,'username',$username,$pass);
@@ -48,10 +48,8 @@ if (isset($_POST["submit"])){
 					$notif = 1;
 				}else {
 					$notif = 2;
-					echo "salah admin";
 				}
 		}
-	$notif = 3;
 }
 ?>
 
@@ -60,9 +58,8 @@ if (isset($_POST["submit"])){
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <?php include('../include/head.php') ?>
-		<title><?php $site_name ?></title>
 		  <!-- BOOTSTRAP STYLES-->
-		<link href="../assets/css/bootstrap.css" rel="stylesheet" />
+		<link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
 		  <!-- FONTAWESOME STYLES-->
 		<link href="../assets/css/font-awesome.css" rel="stylesheet" />
 		<link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -70,34 +67,68 @@ if (isset($_POST["submit"])){
 		<link href="../assets/css/custom.css" rel="stylesheet" />
 		 <!-- GOOGLE FONTS-->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-
+<style media="screen">
+	body{background:url('../assets/img/bg/bg-m-edit.jpg'); background-size:100% 100vh;}
+</style>
 	<title>Halaman Login</title>
 	</head>
 	<body>
-				<div id="page-inner">
-		<div class="container">
-		  <div class="jumbotron" id="header">
-				<h1 align="center">Sistem Informasi Dosen</h1>
-		    <h3 align="center">Penjadwalan dan Karya Ilmiah</h3>
-		  </div>
-		</div>
-		<section class="container">
-					<section class="login-form">
-						<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" role="login">
-							<h4 align="center">Input Data Login</h4>
-							<input type="text" name="username" placeholder="Username" class="form-control input-lg" required/>
-							<input type="password" name="password" placeholder="Password" required class="form-control input-lg" />
-							 <div class="form-group">
+		<div class="" style="padding:5%">
+		<div class=" konten bg-success text-center">
+			<div class="header-sub col-md-8 text-center company__info">
+					<span class="company__logo">
+						<img src="../assets/img/web-profil-1.png" alt="">
+						<h3 class="">Sistem Informasi <br>dan Penjadwalan Dosen</h3>
+
+	        </span>
+			</div>
+			<div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+				<div class="container-fluid">
+
+					<div class="row company__title" >
+
+		          <svg class="logo-login" height="70" width="70">
+		  					<rect x="16" y="8" rx="15" ry="15" style="stroke:#008080; fill:none;" height="58" width="53" />
+								<image x="24.5" y="14.5" height="42" xlink:href="../assets/img/logo-undip.png">
+							</svg>
+						<h3>Selamat Datang</h3>
+						<h5 class="">masuk ke dalam sistem</h5>
+					</div>
+					<div class="login-form">
+						<form method="POST" class="form-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" role="login">
+							<div class="row diver">
+								<div class="btn-group radio_akun" data-toggle="buttons">
+						      <label class="btn btn-primary active">
+						        <input type="radio" name="status"  value="dosen" checked> Dosen
+						      </label>
+						      <label class="btn btn-primary">
+						        <input type="radio" name="status" value="kadep" required>Departemen
+						      </label>
+						      <label class="btn btn-primary">
+						        <input type="radio" name="status" value="admin"> Administrator
+						      </label>
+								</div>
+							</div>
+							<div class="row">
+								<input type="text" name="uname" placeholder="Username" class="form-control input-lg" required/>
+							</div>
+							<div class="row">
+								<input type="password" name="password" id="login_input" placeholder="Password" class="form-control input-lg" required/>
+							</div>
+							<!--
+							 <div class="row">
                   <select name="status" class="form-control" id="level" required >
                       <option selected disabled>Pilih Level User</option>
                       <option value="admin">Administrator</option>
                       <option value="dosen">Dosen</option>
                   </select>
               </div>
-							<button type="submit" name="submit" class="btn btn-block">Masuk</button>
+						-->
+							<button type="submit" name="submit" class="btn">Masuk</button>
 						</form>
-					</section>
-			</section>
+					</div>
+			</div>
+			</div>
 		</form>
 	</div>
 </div>
@@ -107,10 +138,10 @@ if (isset($_POST["submit"])){
 if (isset($notif)) {
 	switch ($notif) {
 		case 1:
-			echo showAlert($notif,'Nilai berhasil ditambahkan '.$errPict);
+			echo showAlert($notif,'berhasil login '.$errPict);
 			break;
 		case 2:
-			echo showAlert($notif,'Terjadi kesalahan saat proses input '.$errPict);
+			echo showAlert($notif,'Username atau Password salah '.$errPict);
 			break;
 		case 3:
 			echo showAlert($notif,'Terdapat data kosong pada formulir '.$errPict);

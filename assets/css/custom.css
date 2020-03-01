@@ -355,10 +355,6 @@ background-color: #FFF;
 .green-btn{
   background-color: #25ad62 !important
 }
-.judul-tabel{
-  -webkit-text-stroke:medium;
-  text-align: center;
-}
 .foto-profil{
   width: 100%;
   border-color: #4eecde;
@@ -429,7 +425,8 @@ background-color: #FFF;
 }
 
 .col-50{
-  width:49%;
+  display: inline-block;
+  width:45%;
 }
 /* Small devices (tablets, 768px and up) */
 @media (max-width: 768px) {
@@ -681,16 +678,149 @@ line-height: 1.428571429;
     td.day span.today-date{
       font-size: 16pt;
     }
+/*==============================================
+    LOGIN PAGE
+    =============================================*/
+.konten{
+	width: 56%;
+	border-radius: 20px;
+	box-shadow: 0 5px 5px rgba(0,0,0,.4);
+	margin: 5em auto;
+  display: flex;
+}
+.header-sub{
+  position: relative;
+  width: 66.666667%;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  z-index: 2;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.logo-login{
+  position: absolute;
+  top: 5%;
+  z-index: 1;
+  left: 5%;
+}
+.company__info{
+	background-image:url("../img/bg/bg-ss-edit.jpg");
+  background-position: left:-1px,top:-1px;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: #fff;
+}
+.company__title{
+  text-align: left;
+}
+.company__title > h3{
+  margin-top: 20%;
+  margin-bottom: 0;
+  color: #54705a;
+}
+.company__title > h5{
+  margin-top: 0;
+  padding: 0;
+  color: #d0d6cd;
+}
+.company__logo{
+  margin-top: 5%;
+  -webkit-text-stroke: thin;
+}
+.login_form{
+	background-color: #fff;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #ccc;
+  padding: 5% 5% 0;
+}
+@media screen and (max-width: 640px) {
+	.konten{width: 90%;}
+	.company__info{
+		display: none;
+	}
+	.login_form{
+		border-top-left-radius:20px;
+		border-bottom-left-radius:20px;
+	}
+}
 
+.row > h2{
+	color:#008080;
+}
+.form__input{
+	width: 100%;
+	border:0px solid transparent;
+	border-radius: 0;
+	border-bottom: 1px solid #aaa;
+	padding: 1em .5em .5em;
+	padding-left: 2em;
+	outline:none;
+	margin:1.5em auto;
+	transition: all .5s ease;
+}
+.form__input:focus{
+	border-bottom-color: #008080;
+	box-shadow: 0 0 5px rgba(0,80,80,.4);
+	border-radius: 4px;
+}
+#login_input{
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.radio_akun{
+  position: absolute;
+  display: flex;;
+  top: -150px;
+  left: 5%;
+}
+.diver{
+  position: absolute;
+  top: 24%;
+  left: 13.5%;
+}
+@media screen and (max-width: 640px) {
+	.radio_akun{
+		left: -5%;
+	}
+  .diver{
+    left: 6.5%;
+  }
+}
+.btn{
+	transition: all .5s ease;
+	width: 70%;
+	border-radius: 30px;
+	color:#008080;
+	font-weight: 600;
+	background-color: #fff;
+	border: 1px solid #008080;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+}
+.btn:hover, .btn:focus{
+	background-color: #008080;
+	color:#fff;
+}
+label.btn.btn-primary{
+  line-height: 2;
+  padding: 3px 6px;
+}
 /*==============================================
     MEDIA QUERIES
     =============================================*/
 
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
-        padding: 15px 30px;
-        min-height: 1200px;
+      margin: 0 0 0 260px;
+      padding: 15px 30px;
+      min-height: 1200px;
 
     }
 

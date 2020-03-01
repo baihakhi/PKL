@@ -1,5 +1,8 @@
 <?php
-
+if (!isset($_SESSION['username'])) {
+  // code...
+  header('Location: ../landpage/index.php');
+}
 $name = $_SESSION['nama'];
 $username = $_SESSION['username'];
 $status = $_SESSION['akses'];
@@ -20,7 +23,7 @@ switch ($status) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><?php $site_name ?></title>
 		  <!-- BOOTSTRAP STYLES-->
-		<link href="../assets/css/bootstrap.css" rel="stylesheet" />
+		<link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
 		  <!-- FONTAWESOME STYLES-->
 		<link href="../assets/css/font-awesome.css" rel="stylesheet" />
 		<link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -52,7 +55,7 @@ switch ($status) {
 				?>
 				</a>
 
-				<a href="../logout.php" class="btn btn-danger square-btn-adjust">Logout</a>
+				<a href="../logout.php" class="btn-danger btn" style="display:inline;">Logout</a>
 			</div>
         </nav>
         <!-- /. NAV TOP  -->

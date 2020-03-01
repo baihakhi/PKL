@@ -161,7 +161,7 @@ function build_calendar($month,$year,$dateArray, $q) {
                                <label for='jam".$key."'>Waktu Pelaksanaan</label>
                              </div>";
                    echo      "<div class='col-75 data-popup'>
-                               <div id='jam".$key."'> ".date('h:m',mktime($jam[$key],$menit[$key],0))." WIB </div>
+                               <div id='jam".$key."'> ".$jam[$key].":".$menit[$key]." WIB </div>
                                </div>
                            </div>"; //ckose row
                    echo   "<div class='row'>";
@@ -221,10 +221,10 @@ function build_calendar($month,$year,$dateArray, $q) {
                              </div>";
                    echo      "<div class='col-75 data-popup' id='jam".$keyM."'>
                                <div class='col-50'>
-                               <div> ".date('h:m',mktime($jamawal[$keyM],$menitawal[$keyM],0))." WIB </div>
+                               <div> ".$jamawal[$keyM].":".$menitawal[$keyM]." WIB </div>
                                </div>
                                <div class='col-50'>
-                               <div> ".date('h:m',mktime($jamakhir[$keyM],$menitakhir[$keyM],0))." WIB </div>
+                               <div> ".$jamakhir[$keyM].":".$menitakhir[$keyM]." WIB </div>
                                </div>
                              </div>
                            </div>"; //ckose row
@@ -291,10 +291,10 @@ function build_calendar($month,$year,$dateArray, $q) {
                                          </div>";
                                echo      "<div class='col-75 data-popup' id='jam".$keyM."'>
                                            <div class='col-50'>
-                                           <div> ".date('h:m',mktime($jamawal[$keyM],$menitawal[$keyM],0))." WIB </div>
+                                           <div> ".$jamawal[$keyM].":".$menitawal[$keyM]." WIB </div>
                                            </div>
                                            <div class='col-50'>
-                                           <div> ".date('h:m',mktime($jamakhir[$keyM],$menitakhir[$keyM],0))." WIB </div>
+                                           <div> ".$jamawal[$keyM].":".$menitawal[$keyM]." WIB </div>
                                            </div>
                                          </div>
                                        </div>"; //ckose row
@@ -348,7 +348,7 @@ function build_calendar($month,$year,$dateArray, $q) {
                                <label for='jam".$key."'>Waktu Pelaksanaan</label>
                              </div>";
                    echo      "<div class='col-75 data-popup'>
-                               <div id='jam".$key."'> ".date('h:m',mktime($jam[$key],$menit[$key],0))." WIB </div>
+                               <div id='jam".$key."'> ".$jam[$key].":".$menit[$key]." WIB </div>
                                </div>
                            </div>"; //ckose row
                    echo   "<div class='row'>";

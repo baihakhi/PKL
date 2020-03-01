@@ -155,10 +155,17 @@ function getAllDay($day,$date){
 
 function tambahMengampu ($arr){
   global $db;
- print_r($arr);
   $query = $db->query(
     "INSERT INTO mengampu (nip, kode, tanggal)
     VALUES ('$arr[0]','$arr[1]','$arr[2]') ");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function hapusMengampu ($arr){
+  global $db;
+  $query = $db->query(
+   "DELETE FROM mengampu WHERE nip='$arr[0]' AND kode='$arr[1]'");
 
   return isset($query) ? checkQuery($query) : false;
 }

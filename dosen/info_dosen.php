@@ -133,7 +133,7 @@ if (isset($_GET['q'])) {
                 </tr>
               </table>
               <table name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
-                <tbody align="center">
+                <tbody align="center" class="cornered">
                   <tr>
                     <td colspan="5" class="center-align judul">Daftar Karya ilmiah</td>
                   </tr>
@@ -146,7 +146,7 @@ if (isset($_GET['q'])) {
                   if ($numKarya>0) {
                     for ($i=0; $i<$numKarya ; $i++) {
                       echo "<tr class='open-button' onclick='$(this).openForm();' data-id='".$idKarya[$i]."'>";
-                      echo  "<td class='left'>".$judul[$i]."</td>";
+                      echo  "<td class=''>".$judul[$i]."</td>";
 
                       $jenis_karya[$i] = castJenisKarya($jenis[$i]);
                       $pAnggar[$i] = castPendana($pendana[$i]);
