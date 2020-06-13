@@ -35,6 +35,10 @@ body {
     min-height:1200px;
 }
 
+input[type=file]#foto-button {
+  display:none;
+}
+
 .text-center {
     text-align:center;
 }
@@ -347,17 +351,32 @@ background-color: #FFF;
   max-width: 25%;
 }
 
+.kanan-align.btn {
+  position: absolute;
+  right: 7%;
+}
+
+.full-bar .kanan-align {
+  max-width: 40%;
+}
+
+.full-bar .kiri-align {
+  background-color: white;
+  padding: 10px 0px 0px 10px;
+  margin-top: 30px;
+}
+
 .kiri-align{
   margin: 0 20px 0 20px;
   float: left;
-  max-width: 15%;
+  display: inline;
 }
 .green-btn{
   background-color: #25ad62 !important
 }
 .foto-profil{
   width: 100%;
-  border-color: #4eecde;
+  border-color: #e6ffe6;
   margin-top: 15px;
 }
 .left-to-center{
@@ -392,24 +411,38 @@ background-color: #FFF;
     }
 }
 
-/*pop up description
+
 .open-button {
   background-color: #555;
   color: white;
-  padding: 16px 20px;
+
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  position: fixed;
+/*  position: fixed;
   bottom: 23px;
   right: 28px;
   width: 280px;
+*/}
+
+.today.open-button {
+  background-color: #4d4d4d;
+  color: white;
+
+  border: 3px solid #e4ec48;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.center .rect-fluid-left.rect-fluid-right{
+  background-color: #917e7e;
+  border: 1px solid #575454;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: auto;
   border: 3px solid #f1f1f1;
@@ -469,8 +502,11 @@ background-color: #FFF;
   max-width: 100%;
   padding: 10px;
   background-color: white;
+  min-width: 345px;
 }
-
+.form-container > h2{
+  text-align: center;
+}
 /* Set a style for the submit/login button */
 .form-container .btn {
   background-color: #4CAF50;
@@ -515,7 +551,7 @@ label {
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+/*  cursor: pointer;*/
   float: right;
 }
 
@@ -590,6 +626,11 @@ label {
 	}
 }
 
+.flexing {
+  display:inline-flex;
+  width: 100%;
+}
+
 
 /*==============================================
     UI ELEMENTS STYLES
@@ -627,6 +668,10 @@ line-height: 1.428571429;
       left: auto;
       background-color: aqua;
       width: -webkit-fill-available;
+      display: none;
+    }
+    .foto-container:hover .bottom-center{
+      display: flex;
     }
     .top-right {
       padding: 0 6px 0 8px;
@@ -636,8 +681,56 @@ line-height: 1.428571429;
       color: #9ca999;
       background-color: #ffffb3;
     }
-    .container-divide .foto-container .foto-profil{
-      width: 100px
+/*    .container-divide .foto-container .foto-profil{
+      width: 100px;
+    }
+*/
+    .container-divide .foto-container{
+      max-width: 100%;
+    }
+    .thumbnail-dosen{
+      background-color: aqua;
+      padding: 5px 0px 5px 5px;
+
+    }
+    .thumbnail-dosen .foto-container{
+      max-width: 30%;
+      display: inline;
+      margin-right: 10px;
+    }
+    .row .foto-container > img{
+      width: 80px;
+      height: 110px;
+      margin-top: 0;
+    }
+    .thumbnail-dosen .col-75{
+      width: 60%;
+      padding-left: 7px;
+      background-color: white;
+    }
+    .rect-fluid-right{
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .rect-fluid-left{
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+    .full-bar.rect-fluid-left.rect-fluid-right{
+      background-color: #e6ffe6;
+      width: 82%;
+      display: table;
+      padding: 25px 0px 0px 25px;
+    }
+    .judul-center{
+      font-weight: bolder;
+      color: #715e5e;
+      text-align: center;
+      margin-bottom: 10px
+    }
+    .kapital{
+      text-transform: capitalize;
+      font-size: x-large;
     }
 
     /*==============================================
@@ -645,11 +738,7 @@ line-height: 1.428571429;
         =============================================*/
     .calendar .header{
       border-style: solid solid double solid;
-      border-color: 4d4d4d;
-    }
-    .calendar .day{
-      border-style: solid;
-      border-color: 4d4d4d;
+      border-color: #4d4d4d;
     }
     table.calender{
       border: 1px solid 4d4d4d;
@@ -673,7 +762,7 @@ line-height: 1.428571429;
       background-color: #a6c3df;
     }
     td.today {
-      background-color:#efefef;
+      background-color:#b5d28f;
     }
     td.day span.today-date{
       font-size: 16pt;
@@ -795,7 +884,7 @@ line-height: 1.428571429;
 }
 .btn{
 	transition: all .5s ease;
-	width: 70%;
+	width: 100%;
 	border-radius: 30px;
 	color:#008080;
 	font-weight: 600;
@@ -808,6 +897,13 @@ line-height: 1.428571429;
 	background-color: #008080;
 	color:#fff;
 }
+
+.mini-btn{
+  display: inline-flex;
+  width: fit-content;
+  text-align: right;
+}
+
 label.btn.btn-primary{
   line-height: 2;
   padding: 3px 6px;

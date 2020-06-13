@@ -45,6 +45,30 @@ th:first-child {
   border-bottom: 1px solid #22262e;
 }
 
+.cornered > tr.judul-kolom:hover:not(first-child) td {
+  background:#FFFFFF;
+  color: #666B85;
+  text-align:center;
+  vertical-align:middle;
+  font-weight:300;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: default;
+
+}
+
+.cornered > tr.judul-kolom:hover:first-child td.judul-kolom {
+  background:#EBEBEB;
+  color: #666B85;
+  text-align:center;
+  vertical-align:middle;
+  font-weight:300;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: default;
+
+}
+
 th:last-child {
   border-top-right-radius:3px;
   border-right:none;
@@ -77,7 +101,6 @@ th:last-child {
 }
 
 .cornered > tr:nth-child(odd):hover td {
-  background:#4E5066;
 }
 
 .cornered > tr:last-child td:first-child {

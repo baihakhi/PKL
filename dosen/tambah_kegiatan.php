@@ -53,7 +53,6 @@ if(isset($_POST['tambah'])){
 
   if (in_array('',$arrayKegiatan)) {
     $notif = 3;//null data
-    echo "null";
   }else{
     if (!checkKegiatanExist($kodeKegiatan)) {
       if (tambahKegiatan($arrayKegiatan)) {

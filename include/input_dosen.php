@@ -1,5 +1,5 @@
 <div class="input-field col s12">
-  <select id="listDosen" name="listDosen[]" multiple="multiple" <?=empty($selectedDosen) ? 'required' : ''?> ">
+  <select id="listDosen" name="listDosen[]" multiple="multiple" <?=empty($selectedDosen) ? 'required' : ''?> >
     <?php
       $selectedDosen = '';
 

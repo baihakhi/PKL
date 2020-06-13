@@ -1,4 +1,4 @@
-<div class="input-field col s6">
+<div class="input-field col">
   <select id="lab" name="lab" <?=empty($selectedLab) ? 'required' : ''?> >
     <?php
     if(empty($selectedLab)) {

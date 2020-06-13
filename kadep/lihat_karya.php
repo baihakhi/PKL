@@ -1,6 +1,8 @@
 <?php
 //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+
 session_start();
+
 
 include('../include/function.php');
 include('../include/calendar.php');
@@ -9,19 +11,6 @@ include_once('../include/sidebar.php');
 
 $target_dir = "../images/";
 $gambar = "no_pict23.png";
-//if level= Administrator dan dosen
-/*$arrKegiatan = getAllRow('kegiatan');
-while ($kegiatan = $arrKegiatan->fetch_object()) {
-  $kodeK[] = $kegiatan->id_kegiatan;
-  $judul[] = $kegiatan->judul;
-  $tanggal[] = $kegiatan->tanggal;
-  $waktu[] = $kegiatan->waktu;
-  $jenis[] = $kegiatan->jenis;
-  $tempat[] = $kegiatan->tempat;
-}
-*/
-
-
 
 //--------------call calendar
 //$dateComponents = date_create("2020-1-1");
@@ -64,9 +53,12 @@ if (isset($_GET['q'])) {
       }
     }
 
+
+    $m='';
+
   }
   else {
-    header('Location: index.php');
+    header('Location: ../landpage/index.php');
   }
 }
 else {

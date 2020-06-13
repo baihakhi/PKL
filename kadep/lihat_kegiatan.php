@@ -1,27 +1,16 @@
 <?php
 //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+
 session_start();
 
+
 include('../include/function.php');
-include('../include/calendar.php');
+include('../include/calendar_kadep.php');
 include_once('../include/sidebar.php');
 
 
 $target_dir = "../images/";
 $gambar = "no_pict23.png";
-//if level= Administrator dan dosen
-/*$arrKegiatan = getAllRow('kegiatan');
-while ($kegiatan = $arrKegiatan->fetch_object()) {
-  $kodeK[] = $kegiatan->id_kegiatan;
-  $judul[] = $kegiatan->judul;
-  $tanggal[] = $kegiatan->tanggal;
-  $waktu[] = $kegiatan->waktu;
-  $jenis[] = $kegiatan->jenis;
-  $tempat[] = $kegiatan->tempat;
-}
-*/
-
-
 
 //--------------call calendar
 //$dateComponents = date_create("2020-1-1");
@@ -38,40 +27,8 @@ if (isset($_GET['m'])){
       $month = $dateComponents['mon'];
       $year = $dateComponents['year'];
 }
+    $m='';
 
-if (isset($_GET['q'])) {
-  $q = readInput($_GET['q']);
-  $row = getSpesificRow('dosen','nip',$q);
-
-  if (checkQueryExist($row)) {
-    while ($dosen = $row->fetch_object()) {
-      $nama = $dosen->nama;
-      $nip = $dosen->nip;
-      $ttl = $dosen->TTL;
-      $alamat = $dosen->alamat;
-      $email = $dosen->email;
-      $foto = $dosen->foto;
-      $id_lab = $dosen->laboratorium;
-
-      $row_lab = getLabDosen($id_lab);
-      while ($lab = $row_lab->fetch_object()) {
-        $nama_lab = $lab->nama_lab;
-      }
-
-      if (!empty($foto)){
-        $gambar = $foto;
-        $target_dir = "../assets/image/";
-      }
-    }
-
-  }
-  else {
-    header('Location: index.php');
-  }
-}
-else {
-  header ('Location: 404.php');
-}
 
 
 ?>
@@ -91,9 +48,9 @@ else {
           <div class="full-bar">
             <div id='dp'>
               <?php
-               echo build_previousMonth($month, $year, $monthString, $q);
-               echo build_nextMonth($month,$year,$monthString, $q);
-               echo build_calendar($month,$year,$dateComponents, $q);
+               echo build_previousMonth($month, $year, $monthString);
+               echo build_nextMonth($month,$year,$monthString);
+               echo build_calendar($month,$year,$dateComponents);
                ?>
             </div>
             </div>

@@ -6,9 +6,6 @@ include_once('../include/function.php');
 include_once('../include/sidebar.php');
 
 $arrLab = getAllRow('laboratorium');
-$arrListDosen = getAllRow('dosen');
-$today = getdate();
-$year = $today['year'];
 
 
 if(isset($_POST['tambah'])){
@@ -17,28 +14,13 @@ if(isset($_POST['tambah'])){
   $array = array();
   $kodeMP = readInput($_POST['kode']);
 
-  if ($_POST['smt']='ganjil') {
-    // code...
-    $smt = 1;
-    $dateUts =$year.'-08-01';
-    $dateUas =$year.'-10-01';
-//    echo "SMT = ".$smt;
-  }elseif ($_POST['smt']='genap') {
-    // code...
-    $smt = 0;
-    $dateUts =$year.'-02-01';
-    $dateUas =$year.'-04-01';
-//    echo "SMT = ".$smt;
-
-  }
-
   array_push($array,!empty($_POST['kode']) ? $kodeMP : '');
   array_push($array,!empty($_POST['nama']) ? readInput($_POST['nama']) : '');
   array_push($array,!empty($_POST['fakultas']) ? readInput($_POST['fakultas']) : '');
   array_push($array,!empty($_POST['jurusan']) ? readInput($_POST['jurusan']) : '');
   array_push($array,!empty($_POST['tempat']) ? readInput($_POST['tempat']) : '');
   array_push($array,!empty($_POST['hari']) ? readInput($_POST['hari']) : '');
-  array_push($array,!empty($_POST['smt']) ? $smt : '');
+  array_push($array,!empty($_POST['smt']) ? readInput($_POST['smt']) : '');
   array_push($array,!empty($_POST['T1']) ? readInput($_POST['T1']) : '');
   array_push($array,!empty($_POST['T2']) ? readInput($_POST['T2']) : '');
 
@@ -59,57 +41,7 @@ if(isset($_POST['tambah'])){
       $notif = 4;
     }
   }
-
-  $selectedNip1 = readInput($_POST['listDosenUts']);
-  $selectedNip2 = readInput($_POST['listDosenUas']);
-  $arrayTmp1 = array(); //===rray for table kegiatan_dosen
-  $arrayTmp2 = array(); //===rray for table kegiatan_dosen
-  array_push($arrayTmp1,!empty($_POST['listDosenUts']) ? $selectedNip1 : '');
-  array_push($arrayTmp2,!empty($_POST['listDosenUas']) ? $selectedNip2 : '');
-  array_push($arrayTmp1,!empty($_POST['kode']) ? $kodeMP : '');
-  array_push($arrayTmp2,!empty($_POST['kode']) ? readInput($_POST['kode']) : '');
-
-  $kbmUts = getAllDay($_POST['hari'], $dateUts);
-  $kbmUas = getAllDay($_POST['hari'], $dateUas);
-  $jumlahDay = count($kbmUts);
-
-  for ($d=0; $d<$jumlahDay ; $d++) {
-//    echo "---ITERASI ".$d."---";
-//    $kkb1 = date_create($kbmUts[$d]);
-//    $kkb2 = date_create($kbmUas[$d]);
-    $date1 = $kbmUts[$d];
-    $date2 = $kbmUas[$d];
-//    print_r($kkb1);
-//    echo $date1."  kbm uts 1 \n";
-    $arrayTmp1 = array(); //===rray for table kegiatan_dosen
-    $arrayTmp2 = array(); //===rray for table kegiatan_dosen
-    array_push($arrayTmp1, $selectedNip1);
-    array_push($arrayTmp1, $kodeMP);
-    array_push($arrayTmp1, $date1);
-
-    array_push($arrayTmp2, $selectedNip2);
-    array_push($arrayTmp2, $kodeMP);
-    array_push($arrayTmp2, $date2);
-
-    if (in_array('',$arrayTmp1) || in_array('',$arrayTmp2)) {
-      $notif = 3;//null data
-//      echo "null";
-    }else
-//    print_r($arrayTmp1);echo "--tmp1 \n";
-//    print_r($arrayTmp2);echo "--tmp2 \n";
-      if (tambahMengampu($arrayTmp1) && tambahMengampu($arrayTmp2)) {
-        $notif = 1;//sukses
-//        echo "array2-".$i." sukses";
-      }
-      else {
-        $notif = 4;
-//        echo "notif 4";
-      }
-    unset($arrayTmp1);
-    unset($arrayTmp2);
-  }
-
-
+//print_r($array);
 
 }
 ?>
@@ -128,7 +60,7 @@ if(isset($_POST['tambah'])){
             <h5 class="judul center-align">Input data Mata Kuliah</h5>
 
             <div class="row">
-              <form class="form-horizontal col s12" method="post" enctype="multipart/form-data">
+              <form class="form-horizontal form-group col s12" method="post" enctype="multipart/form-data">
 
                 <table align="center" style="max-width:75% ;">
                   <tr>
@@ -139,7 +71,9 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Kode Matakuliah</td>
                     <td class="colon">:</td>
-                    <td colspan="4"><input type="text" name="kode" id="kode" onkeyup="capslock()"/></td>
+                    <td colspan="4"><input type="text" name="kode" maxlength="8" id="kode"
+                                            style="text-transform: uppercase;"
+                                            oninput="let p = this.selectionStart; this.value = this.value.toUpperCase();this.setSelectionRange(p, p);"/></td>
                   </tr>
                   <tr>
                     <td>Jurusan</td>
@@ -152,7 +86,9 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Tempat</td>
                     <td class="colon">:</td>
-                    <td ><input type="text" name="tempat"></td>
+                    <td ><input type="text" name="tempat"
+                          style="text-transform: uppercase;"
+                          oninput="let p = this.selectionStart; this.value = this.value.toUpperCase();this.setSelectionRange(p, p);"></td>
                   </tr>
                   <tr>
                     <td>Waktu</td>
@@ -179,43 +115,18 @@ if(isset($_POST['tambah'])){
                   <tr>
                     <td>Semester</td>
                     <td class="colon">:</td>
-                    <td class="form-group">
-                      <div class="col-sm-10">
-                            <label class="radio-inline">
-                              <input type="radio" id="ganjil" name="smt" style="left:10px; margin-left:0; opacity:1;" value="ganjil" checked> Ganjil </label>
-                            <label class="radio-inline">
-                              <input type="radio" id="genap" name="smt" style="left:50%; margin-left:0; opacity:1;" value="genap"> Genap </label>
+                    <td class="">
+                      <div class="btn-group radio_smt" data-toggle="buttons" style="display:inline-flex">
+                            <label class="btn btn-primary">
+                              <input type="radio" name="smt" value="1" checked> Ganjil
+                            </label>
+                            <label class="btn btn-primary">
+                              <input type="radio" name="smt" value="2"> Genap
+                            </label>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Pengampu</td>
-                    <td class="colon">:</td>
-                    <td colspan="4" style="width:75%;">
-                      <div class="input-field col s12">
-                        <span style="display:inline;">UTS</span>
-                        <select class="listDosen" name="listDosenUts" required style="margin-bottom:10px; width:93%;">
-                          <?php
-                          while ($lDosen = $arrListDosen->fetch_object()) {
-                            $nipD[] = $lDosen->nip;
-                            $namaD[] = $lDosen->nama;
-                          }
-                          $jumlahDosen = count($nipD);
-                          for ($i=0; $i<$jumlahDosen ; $i++){
-                            echo "<option value=".$nipD[$i]." ".(($nipD[$i] == $selectedDosen) ? 'selected' : '').">".$namaD[$i]."</option>";
-                          }
-                        ?>
-                        </select>
-                        <span style="display:inline;">UAS</span> <select class="listDosen" name="listDosenUas" required style="width:93%;">
-                          <?php
-                          for ($i=0; $i<$jumlahDosen ; $i++){
-                            echo "<option value=".$nipD[$i]." ".(($nipD[$i] == $selectedDosen) ? 'selected' : '').">".$namaD[$i]."</option>";
-                          }
-                          ?>
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+
                 </table>
 
                 <div class="form-group kanan-align" style="margin-right:10%">
@@ -254,11 +165,6 @@ if(isset($_POST['tambah'])){
           }
         x = hours+":"+minutes;document.getElementById("T2").value= x;
     }
-    function capslock() {
-      var str = document.getElementById("kode").value;
-      var res = str.toUpperCase();
-      document.getElementById("kode").innerHTML= res;
-    }
 
 </script>
 
@@ -267,16 +173,16 @@ if(isset($_POST['tambah'])){
     if (isset($notif)) {
       switch ($notif) {
         case 1:
-          echo showAlert($notif,'Nilai berhasil ditambahkan '.$errPict);
+          echo showAlert($notif,'Nilai berhasil ditambahkan ');
           break;
         case 2:
-          echo showAlert($notif,'Data dosen sudah ada'.$errPict);
+          echo showAlert($notif,'Data dosen sudah ada');
           break;
         case 3:
-          echo showAlert($notif,'Terdapat data kosong pada formulir '.$errPict);
+          echo showAlert($notif,'Terdapat data kosong pada formulir ');
           break;
         case 4:
-          echo showAlert($notif,'Terjadi kesalahan saat proses input  '.$errPict);
+          echo showAlert($notif,'Terjadi kesalahan saat proses input  ');
           break;
       }
     }

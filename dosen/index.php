@@ -127,9 +127,11 @@ $gambar = "no_pict23.png";
                       </tr>
                     </table>
                     <table class="" name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
-                      <th colspan="5" class="center-align judul">Daftar Karya ilmiah</th>
                       <tbody align="center" class="cornered">
-                        <tr>
+                        <tr class="judul-kolom">
+                          <td colspan="5" class="center-align judul-kolom" style="  -webkit-text-stroke:medium;">Daftar Karya ilmiah</td>
+                        </tr>
+                        <tr class="judul-kolom">
                           <td class="judul-tabel" style="width: 50%">Judul</td>
                           <td class="judul-tabel">Jenis Karya</td>
                           <td class="judul-tabel">Tanggal</td>

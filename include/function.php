@@ -36,6 +36,16 @@ function getAdminDosen ($username){
   return $query;
 }
 
+function getKadepDosen ($username){
+  global $db;
+
+  $query = $db->query("SELECT kadep.password, dosen.nip, dosen.nama, dosen.foto
+            FROM kadep JOIN dosen
+            ON kadep.nip=dosen.nip
+            WHERE kadep.username='".$username."' ");
+  return $query;
+}
+
 function getDosen ($username){
   global $db;
 
@@ -54,7 +64,7 @@ function editPassword ($table, $colId, $id, $data){
 function editAdmin($username, $arr){
   global $db;
 
-  $query = $db->query("UPDATE admin SET username='".$arr[0]."', nip='".$arr[1]."' WHERE username = '".$username."'  ");
+  $query = $db->query("UPDATE admin SET username='".$arr[1]."', nip='".$arr[0]."' WHERE username = '".$username."'  ");
   return isset($query) ? checkQuery($query) : false;
 }
 
@@ -124,6 +134,12 @@ function checkMapelExist ($arr){
   return checkQueryExist($query);
 }
 
+function checkDosenMengampuExist ($nip,$kode){
+  global $db;
+
+  $query = $db->query("SELECT * FROM mapel WHERE kode='$kode' AND nip='$nip' ");
+  return checkQueryExist($query);
+}
 function tambahMapel ($arr){
   global $db;
 
@@ -145,7 +161,7 @@ function getAllDay($day,$date){
 
     while ($wk < 8) {
         $days[] = date('Y-n-d',mktime(0,0,0,$m,$d,$y));
-        echo $days[$wk]."dari fn \n";
+        //echo $days[$wk]."\n";
         $d += 7;
         $wk++;
     }
@@ -162,10 +178,18 @@ function tambahMengampu ($arr){
   return isset($query) ? checkQuery($query) : false;
 }
 
-function hapusMengampu ($arr){
+function hapusMengampu($id){
   global $db;
-  $query = $db->query(
-   "DELETE FROM mengampu WHERE nip='$arr[0]' AND kode='$arr[1]'");
+
+  $query = $db->query("DELETE FROM mengampu WHERE kode='$id'");
+
+  return isset($query) ? checkQuery($query) : false;
+}
+
+function hapusDosenMengampu($id){
+  global $db;
+
+  $query = $db->query("DELETE FROM mengampu WHERE kode='$id'");
 
   return isset($query) ? checkQuery($query) : false;
 }
@@ -173,16 +197,8 @@ function hapusMengampu ($arr){
 function editMapel($arr,$dosenID){
   global $db;
 
-  $query = $db->query("UPDATE dosen SET NIP='".$arr[0]."', nama='".$arr[1]."', TTL='".$arr[2]."', alamat='".$arr[4]."', email='".$arr[3]."', foto='".$arr[5]."', laboratorium='".$arr[6]."' WHERE NIP = '".$dosenID."'  ");
-
-  return isset($query) ? checkQuery($query) : false;
-}
-
-//delete data mata kuliah
-function hapusMapel($id){
-  global $db;
-
-  $query = $db->query("DELETE FROM mapel WHERE kode='$id'");
+  $query = $db->query("UPDATE dosen SET NIP='".$arr[0]."', nama='".$arr[1]."', TTL='".$arr[2]."', alamat='".$arr[4]."', email='".$arr[3]."', foto='".$arr[5]."', laboratorium='".$arr[6]."'
+    WHERE NIP = '".$dosenID."'  ");
 
   return isset($query) ? checkQuery($query) : false;
 }
@@ -201,6 +217,10 @@ function hapusData($class,$id){
 
     case 'kegiatan':
       $data = 'id_kegiatan';
+      break;
+
+    case 'mengampu':
+      $data = 'kode';
       break;
   }
 
@@ -239,6 +259,38 @@ function getKegiatan($id){
   $query = $db->query("SELECT * FROM kegiatan_dosen JOIN kegiatan
                         ON kegiatan_dosen.id_kegiatan=kegiatan.id_kegiatan
                         WHERE kegiatan.id_kegiatan LIKE '".$id."%'");
+
+  return isset($query) ? runQuery($query) : false;
+}
+
+function getKegiatanByDay($year, $mon, $day){
+  global $db;
+
+  $query = $db->query("SELECT DISTINCT kegiatan.id_kegiatan, judul, tanggal, waktu, tempat, jenis
+                        FROM kegiatan_dosen JOIN kegiatan
+                        ON kegiatan_dosen.id_kegiatan=kegiatan.id_kegiatan
+                        WHERE kegiatan.tanggal='".$year."-".$mon."-".$day."'");
+
+  return isset($query) ? runQuery($query) : false;
+}
+
+function getKegiatanByHour($year, $mon, $day, $jam){
+  global $db;
+
+  $query = $db->query("SELECT DISTINCT kegiatan.id_kegiatan, judul, tanggal, waktu, tempat, jenis
+                        FROM kegiatan_dosen JOIN kegiatan
+                        ON kegiatan_dosen.id_kegiatan=kegiatan.id_kegiatan
+                        WHERE kegiatan.tanggal='".$year."-".$mon."-".$day."'
+                        AND kegiatan.waktu LIKE '".$jam."%'");
+
+  return isset($query) ? runQuery($query) : false;
+}
+
+function getKegiatanByMonth($year, $mon){
+  global $db;
+
+  $query = $db->query("SELECT DISTINCT id_kegiatan, judul, tanggal, waktu FROM kegiatan
+                        WHERE tanggal LIKE '".$year."-".$mon."-%'");
 
   return isset($query) ? runQuery($query) : false;
 }
@@ -302,6 +354,46 @@ function getKarya($id){
                         WHERE karya_ilmiah.id_karya LIKE '".$id."%'");
 
   return isset($query) ? runQuery($query) : false;
+}
+
+function getPengampu($id){
+  global $db;
+  $row = $db->query("SELECT DISTINCT dosen.nip,dosen.foto,nama
+          FROM mengampu JOIN dosen
+          ON mengampu.nip=dosen.nip
+          WHERE mengampu.kode ='".$id."'");
+  return runQuery($row);
+}
+
+function getMengampuByMonth($mon, $year){
+  global $db;
+  $row = $db->query("SELECT DISTINCT mapel.kode, mapel.nama, jamawal, jamakhir, tanggal, hari
+          FROM mengampu JOIN mapel
+          ON mengampu.kode=mapel.kode
+          WHERE mengampu.tanggal LIKE '".$year."-".$mon."-%'");
+  return runQuery($row);
+
+}
+
+function getMengampuByHour($mon, $year, $day, $jam){
+  global $db;
+  $row = $db->query("SELECT DISTINCT mapel.kode, mapel.nama, jamawal, jamakhir, tanggal, hari
+          FROM mengampu JOIN mapel
+          ON mengampu.kode=mapel.kode
+          WHERE mengampu.tanggal='".$year."-".$mon."-".$day."'
+          AND mapel.jamawal LIKE '".$jam."%'");
+  return runQuery($row);
+
+}
+
+function getMengampuByDay($mon, $year, $day){
+  global $db;
+  $row = $db->query("SELECT DISTINCT mapel.kode, mapel.nama, jamawal, jamakhir, tanggal, hari
+          FROM mengampu JOIN mapel
+          ON mengampu.kode=mapel.kode
+          WHERE mengampu.tanggal='".$year."-".$mon."-".$day."'");
+  return runQuery($row);
+
 }
 
 function tambahKarya ($arr){
@@ -380,4 +472,50 @@ function castPendana($pendana){
   return $pAnggar;
 }
 
+function castHari($day){
+  switch ($day) {
+    case "monday": $hari = "Senin";
+      break;
+    case "tuesday": $hari = "Selasa";
+      break;
+    case "wednesday": $hari = "Rabu";
+      break;
+    case "thursday": $hari = "Kamis";
+      break;
+    case "friday": $hari = "Jumat";
+      break;
+  }
+  return $hari;
+}
+
+function castBulan($month){
+  switch ($month) {
+    case "January": $bulan = "Januari";
+      break;
+    case "February": $bulan = "Februari";
+      break;
+    case "March": $bulan = "Maret";
+      break;
+    case "April": $bulan = "April";
+      break;
+    case "May": $bulan = "Mei";
+      break;
+    case "June": $bulan = "Juni";
+      break;
+    case "July": $bulan = "Juli";
+      break;
+    case "August": $bulan = "Agustus";
+      break;
+    case "September": $bulan = "September";
+      break;
+    case "October": $bulan = "Oktober";
+      break;
+    case "November": $bulan = "November";
+      break;
+    case "December": $bulan = "Desember";
+        break;
+
+  }
+  return $bulan;
+}
 ?>

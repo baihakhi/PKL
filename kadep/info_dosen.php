@@ -67,8 +67,9 @@ $tgl = explode(" ",$tanggalan);
 $bulan = castBulan($tgl[1]);
 $date = $tgl[0]." ".$bulan." ".$tgl[2];
 $city = $TTL[0];
-
+//echo "tanggal = ".$date;
 ?>
+
 
 <!DOCTYPE html>
 <html>

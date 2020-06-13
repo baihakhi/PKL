@@ -61,9 +61,12 @@ if (isset($_GET['q'])) {
   $target_dir = "../assets/image/";
 
 //-------------parsing TTL
-  $TTL = explode(",",$ttl);
-  $date = date_create($TTL[1]);
-  $city = $TTL[0];
+$TTL = explode(",",$ttl);
+$tanggalan = date_format(date_create($TTL[1]), "d F Y");
+$tgl = explode(" ",$tanggalan);
+$bulan = castBulan($tgl[1]);
+$date = $tgl[0]." ".$bulan." ".$tgl[2];
+$city = $TTL[0];
 
 ?>
 
@@ -114,7 +117,7 @@ if (isset($_GET['q'])) {
                 <tr>
                   <td style="width:20%;">Tempat tanggal lahir</td>
                   <td class="colon">:</td>
-                  <td><?php echo $city,", ",date_format($date, "d F Y"); ?></td>
+                  <td><?php echo $city,", ",$date ?></td>
                 </tr>
                 <tr>
                   <td style="width:20%;">Alamat</td>
@@ -134,10 +137,10 @@ if (isset($_GET['q'])) {
               </table>
               <table name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
                 <tbody align="center" class="cornered">
-                  <tr>
-                    <td colspan="5" class="center-align judul">Daftar Karya ilmiah</td>
+                  <tr class="judul-kolom">
+                    <td colspan="5" class="center-align juduljudul-kolom" style="-webkit-text-stroke:medium;">Daftar Karya ilmiah</td>
                   </tr>
-                  <tr>
+                  <tr class="judul-kolom">
                     <td class="judul-tabel" style="width: 50%">Judul</td>
                     <td class="judul-tabel">Jenis Karya</td>
                     <td class="judul-tabel">Tanggal</td>
@@ -158,8 +161,11 @@ if (isset($_GET['q'])) {
                       }
                       $numKontributor[$i] = count($nip_k[$i]);
                       echo  "<td style='text-align: center'>".$jenis_karya[$i]."</td>";
-                      $calender[$i] = date_create($tanggal[$i]);
-                      echo  "<td style='text-align: center'>".date_format($calender[$i], "d F Y")."</td>";
+                      $calender[$i] = date_format(date_create($tanggal[$i]), "d F Y");
+                      $cal[$i] = explode(" ",$calender[$i]);
+                      $mon = castBulan($cal[$i][1]);
+                      $calendar[$i] = $cal[$i][0]." ".$mon." ".$cal[$i][2];
+                      echo  "<td style='text-align: center'>".$calendar[$i]."</td>";
 //                      echo  "<td style='text-align: right'> Rp.".$dana[$i]."</td>";
                       echo "<tr>";
 

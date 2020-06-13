@@ -8,12 +8,16 @@ $arrListDosen = getAllRow('dosen');
 
 //================KODE KEGIATAN
 
-$rowDosen = getSpesificRow('dosen','nip',$NIP);
+$rowDosen = getSpesificRow('dosen','nip',$_SESSION['username']);
 if (checkQueryExist($rowDosen)){
   while ($dosen = $rowDosen->fetch_object()) {
-    $nip = $dosen->nip;
+    $nipex = $dosen->nip;
+    $namaex = $dosen->nama;
+
   }
 }
+
+$arrListDosen = excludeDosen($nipex);
 
 
 if(isset($_POST['tambah'])){
@@ -22,9 +26,7 @@ if(isset($_POST['tambah'])){
   $tanggal = readInput($_POST['tanggal']);
   $arrtgl = explode("-",$tanggal);
   $selectedNip = $_POST['listDosen'];
-//  print_r($selectedNip);
   $jumlahDosen = sizeof($selectedNip);
-//  echo "jumlah dosen : ".$jumlahDosen;
 
 //  $subNip = str_split($NIP,4);
   $kodeKarya = $jenis.$arrtgl[1].$arrtgl[2];
@@ -32,12 +34,6 @@ if(isset($_POST['tambah'])){
   $numKarya = countQueryKarya($kodeKarya)+1;
   $idKarya = $kodeKarya.$numKarya;
 
-/*
-  $numKegDos   = countQueryExist('kegiatan_dosen','nip',$NIP);
-  //KODE KEGIATAN DOSEN
-  $numKegDos=$numKegDos+1;
-  $kodeKD = $subNip[1].$subNip[3].$subNip[4].$numKegDos;
-*/
   //================INPUT DATABASE1
 
   $arrayKarya = array();//array for table kegiatan
@@ -160,9 +156,16 @@ if(isset($_POST['tambah'])){
                     <td>Kontributor</td>
                     <td class="colon">:</td>
                     <td colspan="4" style="width:75%;">
-                      <?php
-                        include_once('../include/input_dosen.php');
-                      ?>
+                      <div class="input-field col s12">
+                        <select id="listDosen" name="listDosen[]" multiple="multiple" <?=empty($selectedDosen) ? 'required' : ''?> ">
+                          <?php
+                            $selectedDosen = '';
+
+                            echo '<option value='.$nipex.' selected >'.$namaex.'</option>';
+                          while ($lDosen = $arrListDosen->fetch_object()) {
+                            echo '<option value='.$lDosen->nip.' '.(($lDosen->nip == $selectedDosen) ? 'selected' : '').'>'.$lDosen->nama.'</option>';
+                          }
+                          ?>
                     </td>
                   </tr>
                   <tr>

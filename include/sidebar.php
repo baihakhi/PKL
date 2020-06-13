@@ -12,6 +12,8 @@ switch ($status) {
     break;
   case 'dosen': $level='Dosen';
     break;
+  case 'kadep': $level='Departemen';
+    break;
 }
 //---------------------------------
   $site_name = "KIMIA"
@@ -48,7 +50,7 @@ switch ($status) {
 
 				<a href="edit_profil.php?q=<?= $username ?>" title="ke laman utama" style="color:#fff; font-size:12px;"><i class="fa fa-lock"></i>
 
-					<?php if($status=="admin") {echo $name." (".$level.")"; } elseif($status=="dosen") echo $name;?> </a>&nbsp;&nbsp;
+					<?php if($status=="admin") {echo $name." (".$level.")"; } else echo $name;?> </a>&nbsp;&nbsp;
 
 				<a style="text-decoration: none; color:#fff; font-size:12px;"> <?php
 					echo " ( ".date("D, Y-m-d") . " ". date("h:ia")." )&nbsp;&nbsp;";
@@ -85,21 +87,11 @@ switch ($status) {
 
 						</ul>
 					</li>';
-				}elseif ($status=="dosen") {
+				}elseif ($status=="kadep") {
 					echo '<li>
-						<a href="#"><i class="fa fa-edit fa-2x"></i> Kelola PKT<span class="fa arrow"></span></a>
+						<a href="#"><i class="fa fa-edit fa-2x"></i> Kegiatan Dosen <span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-
-							<li><a href="daftar_pkt.php">Daftar Mahasiswa PKT</a></li>
-
-
-							<li><a href="daftar_penempatan.php">Daftar penempatan mahasiswa</a></li>
-
-							<li><a href="daftar_bimbingan.php">Daftar bimbingan mahasiswa</a></li>
-							<li><a href="daftar_input_judul.php">Input Judul Mahasiswa PKT</a></li>
-							<li><a href="daftar_judul.php">Daftar Judul Mahasiswa PKT</a></li>
-							<li><a href="input_nilai_pkt.php">Input Nilai PKT</a></li>
-							<li><a href="nilai_pkt.php">Daftar Nilai PKT</a></li>
+							<li><a href="daftar_pkt.php">Daftar Dosen PKT</a></li>
 						</ul>
 					</li>';
 				}elseif ($status=="lab") {
@@ -153,8 +145,9 @@ switch ($status) {
 				?>
 				<?php
 					if($status=='admin'){
-						echo '<li><a href="daftar_mapel.php">Daftar Matakuliah</a></li>';
-						echo '<li><a href="tambah_mapel.php">Tambah Matakuliah</a></li>';
+						//echo '<li><a href="daftar_mapel.php">Daftar Matakuliah</a></li>';
+            echo '<li><a href="tambah_mapel.php">Tambah Matakuliah</a></li>';
+						echo '<li><a href="tambah_pengampu.php">Kelola Pengampu</a></li>';
 
 					}
 				?>

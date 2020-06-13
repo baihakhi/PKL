@@ -132,12 +132,17 @@ function build_calendar($month,$year,$dateArray, $q) {
               if ($date == date("Y-m-d")){
                 $calendar .= "<td class='day today open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."' rel='$date'>
                               <span class='today-date'>$currentDay</span>
-                              <div class= 'center'>\n".$judul[$key]."</div>
+                              <div class= 'center'>
+                                <div class= 'row rect-fluid-left rect-fluid-right'>".$judul[$key]."</div>
+                              </div>
                              </td>";
+//                             <div class= 'center'>\n".$judul[$key]."</div>
                            }else {
                 $calendar .= "<td class='day open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."' rel='$date'>
                               <span class='day-date'>$currentDay</span>
-                              <div class= 'center'>".$judul[$key]."</div>
+                              <div class= 'center'>
+                                <div class= 'rect-fluid-left rect-fluid-right'>".$judul[$key]."</div>
+                              </div>
                              </td>";
                            }
                echo "<div class='form-popup' data-class='pop-up' id='".$kodeK[$key]."'>";
@@ -192,12 +197,18 @@ function build_calendar($month,$year,$dateArray, $q) {
               if ($date == date("Y-m-d")){
                 $calendar .= "<td class='day today open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."' rel='$date'>
                               <span class='today-date'>$currentDay</span>
-                              <div class= 'center'>\n".$namaM[$key]."</div>
+                              <div class= 'center'>
+                                <div class= 'rect-fluid-left rect-fluid-right'>".$namaM[$keyM]."</div>
+                              </div>
+                              <div class= 'center' style='display:none;'>\n".$namaM[$keyM]."</div>
                              </td>";
                            }else {
                 $calendar .= "<td class='day open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."' rel='$date'>
                               <span class='day-date'>$currentDay</span>
-                              <div class= 'center'>".$namaM[$keyM]."</div>
+                              <div class= 'center'>
+                                <div class= 'rect-fluid-left rect-fluid-right'>".$namaM[$keyM]."</div>
+                              </div>
+                              <div class= 'center' style='display: none;'>".$namaM[$keyM]."</div>
                              </td>";
                            }
                echo "<div class='form-popup popup-kanan' data-class='pop-up' id='".$kodeM[$keyM]."'>";
@@ -260,14 +271,14 @@ function build_calendar($month,$year,$dateArray, $q) {
               if ($date == date("Y-m-d")){
                 $calendar .= "<td class='day today' rel='$date'>
                               <span class='today-date'>$currentDay</span>
-                              <div class= 'center split-top open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
-                              <div class= 'center split-bot open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                              <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
+                              <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
                              </td>";
                            }else {
                 $calendar .= "<td class='day' rel='$date'>
                               <span class='day-date'>$currentDay</span>
-                              <div class= 'center split-top open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
-                              <div class= 'center split-bot open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                              <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
+                              <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
                               </td>";
                            }
                            echo "<div class='form-popup popup-kanan' data-class='pop-up' id='".$kodeM[$keyM]."'>";

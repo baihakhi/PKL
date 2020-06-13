@@ -1,15 +1,30 @@
 <?php
 session_start();
-
+if (isset($_SESSION['akses'])) {
+  // code...
+	switch ($_SESSION['akses']) {
+		case 'admin':
+			header('Location: ../admin/index.php');
+			break;
+		case 'dosen':
+			header('Location: ../dosen/index.php');
+			break;
+	}
+}
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 include('../include/function.php');
+
+if (isset($_GET['n'])) {
+	// code...
+	$notif = $_GET['n'];
+}
 
 if (isset($_POST["submit"])){
 	$level= $_POST["status"];
 	$username = $_POST['uname'];
 	$password = $_POST['password'];
 	$pass = md5($password);
-	echo "level= ".$level." username= ".$username;
+	//echo "level= ".$level." username= ".$username;
 		if ($level == dosen) {
 			$status=login($level,'nip',$username,$pass);
 				if ($status==true) {
@@ -45,6 +60,24 @@ if (isset($_POST["submit"])){
 						$_SESSION['pass'] = $admin->password;
 					}
 					header("location: ../admin/index.php?s=".$level."&u=".$username."");
+					$notif = 1;
+				}else {
+					$notif = 2;
+				}
+		}
+		elseif ($level == kadep ) {
+				$status=login($level,'username',$username,$pass);
+					if ($status==true) {
+					$_SESSION['username']=$username;
+					$_SESSION['akses']=$level;
+					$data = getKadepDosen($username);
+					while ($kadep = $data->fetch_object()) {
+						$_SESSION['nip'] = $kadep->nip;
+						$_SESSION['nama'] = $kadep->nama;
+						$_SESSION['foto'] = $kadep->foto;
+						$_SESSION['pass'] = $kadep->password;
+					}
+					header("location: ../kadep/index.php?s=".$level."&u=".$username."");
 					$notif = 1;
 				}else {
 					$notif = 2;
@@ -101,9 +134,11 @@ if (isset($_POST["submit"])){
 						      <label class="btn btn-primary active">
 						        <input type="radio" name="status"  value="dosen" checked> Dosen
 						      </label>
-						      <label class="btn btn-primary">
+
+									<label class="btn btn-primary">
 						        <input type="radio" name="status" value="kadep" required>Departemen
 						      </label>
+
 						      <label class="btn btn-primary">
 						        <input type="radio" name="status" value="admin"> Administrator
 						      </label>
@@ -138,16 +173,16 @@ if (isset($_POST["submit"])){
 if (isset($notif)) {
 	switch ($notif) {
 		case 1:
-			echo showAlert($notif,'berhasil login '.$errPict);
+			echo showAlert($notif,'berhasil login ');
 			break;
 		case 2:
-			echo showAlert($notif,'Username atau Password salah '.$errPict);
+			echo showAlert($notif,'Username atau Password salah ');
 			break;
 		case 3:
-			echo showAlert($notif,'Terdapat data kosong pada formulir '.$errPict);
+			echo showAlert($notif,'Terdapat data kosong pada formulir ');
 			break;
 		case 4:
-			echo showAlert($notif,'Data dosen sudah ada '.$errPict);
+			echo showAlert($notif,'Masuk Kembali Menggunakan username dan password baru ');
 			break;
 	}
 }

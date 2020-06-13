@@ -147,11 +147,11 @@ if(isset($_POST['tambah'])){
                     <img src="<?= BASE ?>/images/no_pict23.png" alt="foto dosen" height="150px">
                   -->
                     <input type="file" name="userfile" id=foto-button class="inputfile"/>
-                    <label for="foto-button" class="btn"><span>PILIH FOTO</span></label>
+                    <label for="foto-button" class="btn" style="width:100%"><span>PILIH FOTO</span></label>
                 </div>
 
                 <div class="form-group kanan-align" style="margin-right:10%">
-                  <button type="submit" class="btn waves-effect waves-light gree-btn" name="tambah">SUBMIT</button>
+                  <button type="submit" style="width:100%" class="btn waves-effect waves-light gree-btn" name="tambah">SUBMIT</button>
                 </div>
 
               </form>

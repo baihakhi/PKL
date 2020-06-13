@@ -178,9 +178,12 @@ function showAlert($notif,$message) {
       return "<script>notie.alert('error', '".$message."', 2)</script>";
       break;
     case 3:
-      return "<script>notie.alert('info', '".$message."', 2)</script>";
+      return "<script>notie.alert('warning', '".$message."', 2)</script>";
       break;
-  }
+    case 4:
+      return "<script>notie.alert('info', '".$message."', 3)</script>";
+      break;
+    }
 }
 
 ?>
