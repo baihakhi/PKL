@@ -90,8 +90,8 @@ $gambar = "no_pict23.png";
                       <img src="<?= $profilPict; ?>" alt="foto dosen" border="5px" class="foto-profil" onerror="this.onerror=null;../images/no_pict23.png;">
                     </div>
                   </div>
-                  <div class="kanan-align">
-                    <a href="lihat_karya.php?q=<?= $nip ?>" class="btn waves-effect" style="width:100%;">lihat jadwal</a>
+                  <div class="kanan-align  btn waves-effect" style="width:11%">
+                    <a href="lihat_karya.php?q=<?= $nip ?>">lihat jadwal</a>
                   </div>
                   <div class="row">
                     <table class="center" style="max-width:780px;">
@@ -126,6 +126,8 @@ $gambar = "no_pict23.png";
                         <td><?php echo $nama_lab; ?></td>
                       </tr>
                     </table>
+                    <div class="row"></div>
+
                     <table class="" name="karim" id="karim" style="max-width:90%; margin:0 10% 0 5% ">
                       <tbody align="center" class="cornered">
                         <tr class="judul-kolom">
@@ -163,11 +165,7 @@ $gambar = "no_pict23.png";
                             echo  "<h2>".$judul[$i]."</h2>";
 
                             echo   "<div class='row'>";
-                            echo     "<a href=".$dokumen[$i]." target='_blank'>
-                                      <div class='clicked-list center btn waves-effect waves-light'>
-                                        kunjungi laman dokumen
-                                      </div>
-                                      </a>";
+
                             echo   "<div class='row'>";
                             echo      "<div class='col-25'>
                                         <label for='cal".$i."'>Tanggal Submit</label>
@@ -208,7 +206,12 @@ $gambar = "no_pict23.png";
                                       </div>";
       */
                             echo    "</div>";
-                            echo    "<button type='submit' class='btn cancel' onclick='$(this).closeForm()'>Close</button>";
+                            echo    "<button type='submit' class='btn cancel' onclick='$(this).closeForm()' style='width:45%'>Close</button>";
+                            echo     "<a href=".$dokumen[$i]." target='_blank'>
+                                      <div class='clicked-list center btn waves-effect waves-light' style='width:45%; margin-top:20px'>
+                                        kunjungi laman
+                                      </div>
+                                      </a>";
                             echo   "</div></div>";
                           }
                         }else {

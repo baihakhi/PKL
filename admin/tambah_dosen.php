@@ -8,18 +8,6 @@ $errPict = '';
 
 if(isset($_POST['tambah'])){
 
-  if ($_FILES['userfile']['error'] > 0)
-  {
-    switch ($_FILES['userfile']['error'])
-    {
-      case 1:  $errPict='File exceeded upload_max_filesize';
-      case 2:  $errPict='File exceeded max_file_size';
-      case 3:  $errPict='File only partially uploaded';
-      case 4:  $errPict='No file uploaded';
-      case 6:  $errPict='Cannot upload file: No temp directory specified';
-      case 7:  $errPict='Upload failed: Cannot write to disk';
-    }
-  }
 
   //kamus foto
   $array        = array();
@@ -30,11 +18,7 @@ if(isset($_POST['tambah'])){
   $nama_file    = $_POST['NIP'] .'.'. $file_type;
   $upload_ok    = 1;
 
-
-  if (file_exists($target_file)) {
-      $upload_ok = 0;
-
-  }
+  //------------upload foto
 
   if(!in_array($file_type, $allowed_type)) {
       $upload_ok = 0;

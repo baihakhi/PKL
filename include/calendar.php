@@ -249,18 +249,18 @@ function build_calendar($month,$year,$dateArray, $q) {
                            </div>";
                    echo   "<div class='row'>";
                    echo      "<div class='col-25'>
-                              <label for='tempat".$keyM."'>Fakultas</label>
+                              <label for='fak".$keyM."'>Fakultas</label>
                              </div>";
                    echo      "<div class='col-25 data-popup'>
-                               <div id='tempat".$keyM."'>".$fakM[$keyM]."</div>
+                               <div id='fak".$keyM."'>".$fakM[$keyM]."</div>
                                </div>
                            </div>";
                    echo   "<div class='row'>";
                    echo      "<div class='col-25'>
-                              <label for='tempat".$keyM."'>Fakultas</label>
+                              <label for='jur".$keyM."'>Departemen</label>
                              </div>";
                    echo      "<div class='col-25 data-popup'>
-                               <div id='tempat".$keyM."'>".$fakM[$keyM]."</div>
+                               <div id='jur".$keyM."'>".$jurM[$keyM]."</div>
                                </div>
                            </div>";
 
@@ -305,7 +305,7 @@ function build_calendar($month,$year,$dateArray, $q) {
                                            <div> ".$jamawal[$keyM].":".$menitawal[$keyM]." WIB </div>
                                            </div>
                                            <div class='col-50'>
-                                           <div> ".$jamawal[$keyM].":".$menitawal[$keyM]." WIB </div>
+                                           <div> ".$jamakhir[$keyM].":".$menitakhir[$keyM]." WIB </div>
                                            </div>
                                          </div>
                                        </div>"; //ckose row

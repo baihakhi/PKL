@@ -289,8 +289,10 @@ function getKegiatanByHour($year, $mon, $day, $jam){
 function getKegiatanByMonth($year, $mon){
   global $db;
 
-  $query = $db->query("SELECT DISTINCT id_kegiatan, judul, tanggal, waktu FROM kegiatan
-                        WHERE tanggal LIKE '".$year."-".$mon."-%'");
+  $query = $db->query("SELECT DISTINCT kegiatan.id_kegiatan, judul, kegiatan.tanggal, waktu
+                        FROM kegiatan_dosen JOIN kegiatan
+                        ON kegiatan_dosen.id_kegiatan=kegiatan.id_kegiatan
+                        WHERE kegiatan.tanggal LIKE '".$year."-".$mon."-%'");
 
   return isset($query) ? runQuery($query) : false;
 }
@@ -377,7 +379,7 @@ function getMengampuByMonth($mon, $year){
 
 function getMengampuByHour($mon, $year, $day, $jam){
   global $db;
-  $row = $db->query("SELECT DISTINCT mapel.kode, mapel.nama, jamawal, jamakhir, tanggal, hari
+  $row = $db->query("SELECT DISTINCT mapel.kode, mapel.nama, tempat, fakultas, jurusan, jamawal, jamakhir, tanggal, hari
           FROM mengampu JOIN mapel
           ON mengampu.kode=mapel.kode
           WHERE mengampu.tanggal='".$year."-".$mon."-".$day."'
@@ -474,15 +476,19 @@ function castPendana($pendana){
 
 function castHari($day){
   switch ($day) {
-    case "monday": $hari = "Senin";
+    case "Monday": $hari = "Senin";
       break;
-    case "tuesday": $hari = "Selasa";
+    case "Tuesday": $hari = "Selasa";
       break;
-    case "wednesday": $hari = "Rabu";
+    case "Wednesday": $hari = "Rabu";
       break;
-    case "thursday": $hari = "Kamis";
+    case "Thursday": $hari = "Kamis";
       break;
-    case "friday": $hari = "Jumat";
+    case "Friday": $hari = "Jumat";
+      break;
+    case "Saturday": $hari = "Sabtu";
+      break;
+    case "Sunday": $hari = "Minggu";
       break;
   }
   return $hari;

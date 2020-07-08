@@ -16,7 +16,7 @@ switch ($status) {
     break;
 }
 //---------------------------------
-  $site_name = "KIMIA"
+  $site_name = "DEPARTEMEN KIMIA"
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -44,18 +44,16 @@ switch ($status) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" hKeloref="index.php"><i class="fa fa-thumbs-o-up"></i> <?php echo $site_name ?></a>
+                <a class="navbar-brand" hKeloref="index.php"><img src="../assets/img/undip.png" >
+                  <span style="font-size: 14px;display: inline-flex;"><?php echo $site_name ?>
+                  </span><span style="display:inline-flex">UNIVERSITAS DIPONEGORO</span>
+                </a>
             </div>
 			<div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;">
 
 				<a href="edit_profil.php?q=<?= $username ?>" title="ke laman utama" style="color:#fff; font-size:12px;"><i class="fa fa-lock"></i>
 
-					<?php if($status=="admin") {echo $name." (".$level.")"; } else echo $name;?> </a>&nbsp;&nbsp;
-
-				<a style="text-decoration: none; color:#fff; font-size:12px;"> <?php
-					echo " ( ".date("D, Y-m-d") . " ". date("h:ia")." )&nbsp;&nbsp;";
-				?>
-				</a>
+					<?php if($status=="admin" || $status=="kadep") {echo $name." (".$level.")"; } else echo $name;?> </a>&nbsp;&nbsp;
 
 				<a href="../logout.php" class="btn-danger btn" style="display:inline;">Logout</a>
 			</div>
@@ -89,9 +87,9 @@ switch ($status) {
 					</li>';
 				}elseif ($status=="kadep") {
 					echo '<li>
-						<a href="#"><i class="fa fa-edit fa-2x"></i> Kegiatan Dosen <span class="fa arrow"></span></a>
+						<a href="#"><i class="fa fa-edit fa-2x"></i> Dosen <span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a href="daftar_pkt.php">Daftar Dosen PKT</a></li>
+							<li><a href="daftar_dosen.php">Daftar Dosen</a></li>
 						</ul>
 					</li>';
 				}elseif ($status=="lab") {

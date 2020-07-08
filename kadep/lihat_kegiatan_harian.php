@@ -48,8 +48,8 @@ if (isset($_GET['m']) && isset($_GET['y']) && isset($_GET['d'])){
           <div class="full-bar">
             <div id='dp'>
               <?php
-               echo build_previousMonth($month, $year, $day);
-               echo build_nextMonth($month,$year,$day);
+               echo build_previousDay($month, $year, $day);
+               echo build_nextDay($month,$year,$day);
                echo build_calendar($month,$year,$day);
                ?>
             </div>

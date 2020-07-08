@@ -17,6 +17,7 @@ function build_calendar($month,$year,$dateArray) {
      $dateComponents = getdate($firstDayOfMonth);
      // What is the name of the month in question?
      $monthName = $dateComponents['month'];
+     $monthName = castBulan($dateComponents['month']);
      // What is the index value (0-6) of the first day of the
      $target_dir = "../assets/image/";
      // month in question.
@@ -71,8 +72,8 @@ function build_calendar($month,$year,$dateArray) {
      }
 
      // Create the table tag opener and day headers
+     echo "<span class='caption'> $monthName $year</span><div class='row'></div>";
      $calendar = "<table class='calendar'>";
-     $calendar .= "<caption>$monthName $year</caption>";
      $calendar .= "<tr>";
      foreach($daysOfWeek as $day) {
           $calendar .= "<th class='header'>$day</th>";
@@ -124,17 +125,21 @@ function build_calendar($month,$year,$dateArray) {
                                     </td>";
                       }
             }
-            elseif (($key>=0) && (($keyM===false) ||($keyM===false))) {
+            elseif ((($key>=0) && ($key!=false)) && (($keyM===false) || ($keyM==false))) {
+              if((strlen($judul[$key]))>12){
+                $judul[$key]=str_pad(substr($judul[$key],0,12),15,'.',STR_PAD_RIGHT);
+              }
+
               if ($date == date("Y-m-d")){
-                $calendar .= "<td class='day today open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."' rel='$date'>
+                $calendar .= "<td class='day today open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay' data-id='".$kodeK[$key]."' rel='$date'>
                               <span class='today-date'>$currentDay</span>
                               <div class= 'center'>
                                 <div class= 'row rect-fluid-left rect-fluid-right'>".$judul[$key]."</div>
                               </div>
                              </td>";
-//                             <div class= 'center'>\n".$judul[$key]."</div>
+//                             <div class= 'center'>\n".$judul[$key];."</div>
                            }else {
-                $calendar .= "<td class='day open-button' onclick='$(this).openForm();' data-id='".$kodeK[$key]."' rel='$date'>
+                $calendar .= "<td class='day open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay' data-id='".$kodeK[$key]."' rel='$date'>
                               <span class='day-date'>$currentDay</span>
                               <div class= 'center'>
                                 <div class= 'rect-fluid-left rect-fluid-right'>".$judul[$key]."</div>
@@ -145,35 +150,40 @@ function build_calendar($month,$year,$dateArray) {
             elseif (($keyM>=0) && (($key===false) || ($key==false))) {
               //echo "<p> cek : key kegiatan =".$key. " + key mapel =".$keyM." dan tanggal= ".$date."</p>";
               if ($date == date("Y-m-d")){
-                $calendar .= "<td class='day today open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."' rel='$date'>
+                $calendar .= "<td class='day today open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay'; data-id='".$kodeM[$keyM]."' rel='$date'>
                               <span class='today-date'>$currentDay</span>
                               <div class= 'center'>
-                                <div class= 'rect-fluid-left rect-fluid-right'>".$namaM[$keyM]."</div>
+                                <div class= 'rect-fluid-left rect-fluid-right'>".substr($namaM[$keyM],0,9)."</div>
                               </div>
-                              <div class= 'center' style='display:none;'>\n".$namaM[$keyM]."</div>
                              </td>";
                            }else {
-                $calendar .= "<td class='day open-button' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."' rel='$date'>
+                $calendar .= "<td class='day open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay' data-id='".$kodeM[$keyM]."' rel='$date'>
                               <span class='day-date'>$currentDay</span>
                               <div class= 'center'>
-                                <div class= 'rect-fluid-left rect-fluid-right'>".$namaM[$keyM]."</div>
+                                <div class= 'rect-fluid-left rect-fluid-right'>".substr($namaM[$keyM],0,9)."</div>
                               </div>
-                              <div class= 'center' style='display: none;'>".$namaM[$keyM]."</div>
                              </td>";
                            }
 
             }elseif (($keyM>=0) && ($key>=0)) {
+              if((strlen($judul[$key]))>12){
+                $judul[$key]=str_pad(substr($judul[$key],0,12),15,'.',STR_PAD_RIGHT);
+              }
               if ($date == date("Y-m-d")){
-                $calendar .= "<td class='day today' rel='$date'>
-                              <span class='today-date'>$currentDay</span>
-                              <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
-                              <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                $calendar .= "<td class='day today open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay' rel='$date'>
+                                <span class='today-date'>$currentDay</span>
+                                <div class='center'>
+                                  <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".substr($namaM[$keyM],0,9)."</div>
+                                  <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                                </div>
                              </td>";
                            }else {
-                $calendar .= "<td class='day' rel='$date'>
-                              <span class='day-date'>$currentDay</span>
-                              <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".$namaM[$keyM]."</div>
-                              <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                $calendar .= "<td class='day open-button clickable-row' data-href='lihat_kegiatan_harian.php?m=$month&y=$year&d=$currentDay' rel='$date'>
+                                <span class='day-date'>$currentDay</span>
+                                <div class='center'>
+                                  <div class= 'center split-top open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeM[$keyM]."'>\n".substr($namaM[$keyM],0,9)."</div>
+                                  <div class= 'center split-bot open-button rect-fluid-right rect-fluid-left' onclick='$(this).openForm();' data-id='".$kodeK[$key]."'>\n".$judul[$key]."</div>
+                                </div>
                               </td>";
                            }
 
@@ -222,9 +232,9 @@ function build_previousMonth($month,$year,$monthString){
  }
 
  $dateObj = DateTime::createFromFormat('!m', $prevMonth);
- $monthName = $dateObj->format('F');
+ $monthName = castBulan($dateObj->format('F'));
 
- return "<div style='width: 33%; display:inline-block;'><a class='btn' href='?m=" . $prevMonth . "&y=". $prevYear ."'><i class='material-icons fa fa-arrow-left'></i> " . $monthName . "</a></div>";
+ return "<div style='width: 13%; display:inline-block;  float: left;'><a class='btn' href='?m=" . $prevMonth . "&y=". $prevYear ."'><i class='material-icons fa fa-arrow-left'></i> " . $monthName . "</a></div>";
 }
 function build_nextMonth($month,$year,$monthString){
 
@@ -241,8 +251,9 @@ function build_nextMonth($month,$year,$monthString){
  }
 
  $dateObj = DateTime::createFromFormat('!m', $nextMonth);
- $monthName = $dateObj->format('F');
+ $monthName = castBulan($dateObj->format('F'));
 
- return "<div style='width: 33%; display:inline-block;'>&nbsp;</div><div style='width: 33%; display:inline-block; text-align:right;'><a class='btn' href='?m=" . $nextMonth . "&y=". $nextYear ."'>" . $monthName . "   <i class='material-icons fa fa-arrow-right black-text'></i></a></div>";
+
+ return "</div><div style='width: 13%; display:inline-block;  float:right;'><a class='btn' href='?m=" . $nextMonth . "&y=". $nextYear ."'>" . $monthName . "   <i class='material-icons fa fa-arrow-right black-text'></i></a></div>";
 }
 ?>
